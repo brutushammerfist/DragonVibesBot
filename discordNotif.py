@@ -21,11 +21,11 @@ r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}')
 r = r.json()
 
 if(userName == "dracoasier"){
-    hookContent = f'Your favorite Dragon Vibes provider DracoAsier has gone live at https://twitch.tv/dracoasier playing The Witcher. Show him your Dragon Vibe Support. @here'
+    hookContent = f'Your favorite Dragon Vibes provider DracoAsier has gone live at https://twitch.tv/dracoasier playing {game}. Show him your Dragon Vibe Support. @here'
 } else {
-    
+    hookContent = f'Another ally to the Dragon Vibes Den, {name}, has gone live at https://twitch.tv/{userName} playing {game}. Show your Dragon Vibe Support @here!!'
 }
 
-webhook = DiscordWebhook(url=discWebhookUrl, content=f'Bot is ready!!!')
+webhook = DiscordWebhook(url=discWebhookUrl, content=hookContent)
 
 webhook.execute()

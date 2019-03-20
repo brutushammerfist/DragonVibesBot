@@ -3,7 +3,7 @@
         $res = $_GET['hub_challenge'];
         echo $res;
     } else {
-        http_response_code(200)
+        http_response_code(200);
     }
     
     $webhookResponse = json_decode(file_get_contents('php://input'), true);

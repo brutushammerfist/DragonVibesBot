@@ -8,6 +8,8 @@
         echo $res;
     } else {
         echo $_GET;
+        
+        echo "bruh";
         http_response_code(200);
     }
     

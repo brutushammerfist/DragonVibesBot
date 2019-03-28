@@ -57,6 +57,7 @@ class Bot(commands.Bot):
             "hub.lease_seconds" : "864000"
         }
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
+        print(subscribe.text())
         sched = AsyncIOScheduler()
         sched.start()
         job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)
@@ -217,12 +218,12 @@ class Bot(commands.Bot):
     async def distributeTokens(self):
         r = requests.get('https://tmi.twitch.tv/group/user/dracoasier/chatters')
         r = r.json()
-        print(r)
+        #print(r)
         
         headers = {'Client-ID' : f'{twitchClientID}'}
         r2 = requests.get(f'https://api.twitch.tv/helix/streams?user_login=DracoAsier', headers=headers)
         r2 = r2.json()
-        print(r2)
+        #print(r2)
         
         tokenBank = {}
         tokenBankFile = open("tokenBank.json", "r")

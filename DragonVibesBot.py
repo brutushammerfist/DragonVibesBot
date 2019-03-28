@@ -57,7 +57,7 @@ class Bot(commands.Bot):
             "hub.lease_seconds" : "864000"
         }
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
-        print(subscribe.request.body)
+        print(subscribe.content)
         sched = AsyncIOScheduler()
         sched.start()
         job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)

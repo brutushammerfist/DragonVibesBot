@@ -46,10 +46,17 @@ class Bot(commands.Bot):
     def __init__(self):
         super().__init__(irc_token=twitchIRCToken, client_id=twitchClientID, nick='DragonVibesBot', prefix='!',
                          initial_channels=['DracoAsier'])#, webhook_server=True, local_host=locHost, external_host=extHost,
-                         #port=Port)
+        #                 port=Port)
         #loop = asyncio.get_event_loop()
         #loop.run_until_complete(self.modify_webhook_subscription(mode=WebhookMode.subscribe, topic=StreamChanged(twitchUserID), lease_seconds="846000"))
         #self.modify_webhook_subscription(mode='subscribe', topic=f'https://api.twitch.tv/helix/streams?user_id=DracoAsier', lease_seconds="846000")
+        headers = {
+            'Client-ID' : f'{twitchClientID}',
+            'Content-Type' : 'application/json',
+            "hub.topic" : "https://api.twitch.tv/helix/streams?user_id=DracoAsier",
+            "hub.callback" : f'{extHost}:{Port}/webhookHandler.php'#,
+            #"hub.lease_seconds" : "864000",
+        }
         sched = AsyncIOScheduler()
         sched.start()
         job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)

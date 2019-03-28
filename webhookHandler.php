@@ -23,7 +23,7 @@
         echo $test;
         echo $test2;
         
-        $discordNotif = 'python3 ./discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log';
+        $discordNotif = 'python3 /home/brutus/Desktop/DragonVibesBot/DragonVibesBot/discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log';
         exec($discordNotif);
     } else {
         exec('echo emtpy webhook > /tmp/dumb.log 2> /tmp/dumb.log');

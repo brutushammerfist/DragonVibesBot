@@ -8,10 +8,10 @@
         echo $res;
     } else {
         echo $_GET;
-        
-        echo "bruh";
         http_response_code(200);
     }
+    
+    echo "bruh";
     
     $webhookResponse = json_decode(file_get_contents('php://input'), true);
     

@@ -7,6 +7,7 @@
         $res = $_GET['hub_challenge'];
         echo $res;
     } else {
+        echo $_GET;
         http_response_code(200);
     }
     

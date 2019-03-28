@@ -49,7 +49,7 @@ class Bot(commands.Bot):
         headers = {
             'Client-ID' : f'{twitchClientID}',
             'Content-Type' : 'application/json',
-            "hub.topic" : f'https://api.twitch.tv/helix/streams?user_id=59881217'#{twitchUserID}',
+            "hub.topic" : f'https://api.twitch.tv/helix/streams?user_id=59881217',#{twitchUserID}',
             "hub.callback" : f'{extHost}:{Port}/webhookHandler.php',
             "hub.lease_seconds" : "864000"
         }

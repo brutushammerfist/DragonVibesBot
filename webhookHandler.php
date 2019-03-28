@@ -18,9 +18,10 @@
     if(!empty($webhookResponse)){
         $webRes = fopen('/tmp/webRes.json', 'w');
         $test = fwrite($webRes, json_encode($webhookResponse));
-        fclose($webRes);
+        $test2 = fclose($webRes);
         
         echo $test;
+        echo $test2;
         
         $discordNotif = 'python3 ./discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log';
         exec($discordNotif);

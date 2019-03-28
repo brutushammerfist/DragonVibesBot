@@ -25,6 +25,8 @@
     } else {
         exec('echo emtpy webhook > /tmp/dumb.log 2> /tmp/dumb.log');
     }
+    
+    echo "done!";
 ?>
 
 </body>

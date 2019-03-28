@@ -3,6 +3,8 @@
 <body>
 
 <?php
+    chdir("/home/brutus/Desktop/DragonVibesBot/DragonVibesBot");
+
     if(isset($_GET['hub_challenge']) && !empty($_GET['hub_challenge'])){
         $res = $_GET['hub_challenge'];
         http_response_code(200);
@@ -19,7 +21,9 @@
         fclose($webRes);
         
         $discordNotif = 'python3 ./discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log';
-        shell_exec($discordNotif);
+        exec($discordNotif);
+    } else {
+        exec('echo emtpy webhook > /tmp/dumb.log 2> /tmp/dumb.log');
     }
 ?>
 

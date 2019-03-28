@@ -15,14 +15,12 @@
     
     $webhookResponse = json_decode(file_get_contents('php://input'), true);
     
-    echo "$webhookResponse";
-    echo $webhookResponse;
-    echo json_encode($webhookResponse);
-    
     if(!empty($webhookResponse)){
         $webRes = fopen('/tmp/webRes.json', 'w');
-        fwrite($webRes, json_encode($webhookResponse));
+        $test = fwrite($webRes, json_encode($webhookResponse));
         fclose($webRes);
+        
+        echo $test;
         
         $discordNotif = 'python3 ./discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log';
         exec($discordNotif);

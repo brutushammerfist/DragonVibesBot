@@ -18,7 +18,7 @@
         fwrite($webRes, json_encode($webhookResponse));
         fclose($webRes);
         
-        $discordNotif = escapeshellcmd('python3 ./discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log');
+        $discordNotif = 'python3 ./discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log';
         exec($discordNotif);
     }
 ?>

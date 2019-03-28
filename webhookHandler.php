@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+    
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+    Name: <input type="text" name="fname">
+    <input type="submit">
+</form>
+
 <?php
     if(isset($_GET['hub_challenge']) && !empty($_GET['hub_challenge'])){
         $res = $_GET['hub_challenge'];
@@ -17,3 +26,6 @@
         exec($discordNotif);
     }
 ?>
+
+</body>
+</html>

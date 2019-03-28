@@ -19,7 +19,7 @@
         fclose($webRes);
         
         $discordNotif = 'python3 ./discordNotif.py > /tmp/dumb.log 2> /tmp/dumb.log';
-        exec($discordNotif);
+        shell_exec($discordNotif);
     }
 ?>
 

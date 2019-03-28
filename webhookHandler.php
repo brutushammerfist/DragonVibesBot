@@ -13,7 +13,7 @@
         http_response_code(200);
     }
     
-    $webhookResponse = json_decode(file_get_contents('php://input'));
+    $webhookResponse = json_decode(file_get_contents('php://input'), true);
     
     echo "$webhookResponse";
     echo $webhookResponse;

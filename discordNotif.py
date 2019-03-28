@@ -5,7 +5,7 @@ secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)
 secretsFile.close()
 
-dataFile = open("webRes.json", "r")
+dataFile = open("/tmp/webRes.json", "r")
 data = json.load(dataFile)
 dataFile.close()
 

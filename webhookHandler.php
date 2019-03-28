@@ -16,7 +16,7 @@
     $webhookResponse = json_decode(file_get_contents('php://input'), true);
     
     if(!empty($webhookResponse)){
-        $webRes = fopen('webRes.json', 'w');
+        $webRes = fopen('/tmp/webRes.json', 'w');
         fwrite($webRes, json_encode($webhookResponse));
         fclose($webRes);
         

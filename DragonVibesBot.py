@@ -48,12 +48,14 @@ class Bot(commands.Bot):
                          initial_channels=['DracoAsier'])
         headers = {
             'Client-ID' : f'{twitchClientID}',
-            'Content-Type' : 'application/json',
+            'Content-Type' : 'application/json'
+        }
+        payload = {
             "hub.topic" : f'https://api.twitch.tv/helix/streams?user_id=59881217',#{twitchUserID}',
             "hub.callback" : f'{extHost}:{Port}/webhookHandler.php',
             "hub.lease_seconds" : "864000"
         }
-        subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers)
+        subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers, payload)
         sched = AsyncIOScheduler()
         sched.start()
         job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)

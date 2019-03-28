@@ -17,6 +17,7 @@
     
     echo "$webhookResponse";
     echo $webhookResponse;
+    echo json_encode($webhookResponse);
     
     if(!empty($webhookResponse)){
         $webRes = fopen('/tmp/webRes.json', 'w');

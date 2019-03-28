@@ -3,7 +3,7 @@
 <body>
 
 <?php
-    chdir("/home/brutus/Desktop/DragonVibesBot/DragonVibesBot");
+    //chdir("/home/brutus/Desktop/DragonVibesBot/DragonVibesBot");
 
     if(isset($_GET['hub_challenge']) && !empty($_GET['hub_challenge'])){
         $res = $_GET['hub_challenge'];

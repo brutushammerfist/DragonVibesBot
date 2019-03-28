@@ -51,7 +51,7 @@ class Bot(commands.Bot):
             'Content-Type' : 'application/json'
         }
         payload = {
-            "hub.mode" : "subscribe"
+            "hub.mode" : "subscribe",
             "hub.topic" : f'https://api.twitch.tv/helix/streams?user_id=59881217',#{twitchUserID}',
             "hub.callback" : f'{extHost}:{Port}/webhookHandler.php',
             "hub.lease_seconds" : "864000"

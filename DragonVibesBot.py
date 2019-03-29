@@ -12,7 +12,7 @@ from random import randrange
 from discord_webhook import DiscordWebhook
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
-import webhookHandler
+from webhookHandler import SimpleHTTPRequestHandler
 
 secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)
@@ -61,7 +61,7 @@ class Bot(commands.Bot):
         }
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
         print(subscribe.content)
-        httpd = HTTPServer(('0.0.0.0', 8080), SimpleHTTPRequestHandler)
+        httpd = HTTPServer(('0.0.0.0', Port), SimpleHTTPRequestHandler)
         httpd.serve_forever()
         sched = AsyncIOScheduler()
         sched.start()
@@ -104,12 +104,7 @@ class Bot(commands.Bot):
     async def event_userstate(self, user):
         if user.is_mod:
             modList.append(user.name)
-            
-    # NEED TO COMPLETE       
-    #        
-    #async def event_webhook(self, data):
         
-
     # Commands use a decorator...
     @commands.command(name='test')
     async def testCommand(self, ctx):

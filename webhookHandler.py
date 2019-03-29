@@ -36,7 +36,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         gameId = body['data'][0]['game_id']
         
         headers = {'Client-ID' : f'{twitchClientID}'}
-        r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}')
+        r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}', headers=headers)
         r = r.json()
         
         print(r)

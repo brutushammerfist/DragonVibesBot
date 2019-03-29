@@ -35,26 +35,35 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         twitchClientID = secrets['twitchClientID']
         discWebhookUrl = secrets['discWebhookUrl']
         
-        if len(body['data']) > 0:
-            userName = body['data'][0]['user_name']
-            gameId = body['data'][0]['game_id']
-            
-            headers = {'Client-ID' : f'{twitchClientID}'}
-            r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}', headers=headers)
-            r = r.json()
-            
-            print(r)
-            print("-------------------------------")
-            
-            if len(r['data']) == 0:
-                game = "NULL"
-            else:
-                game = r['data'][0]['name']
-            
-            if(userName == "dracoasier"):
-                hookContent = f'Your favorite Dragon Vibes provider DracoAsier has gone live at https://twitch.tv/dracoasier playing {game}. Show him your Dragon Vibe Support. @here'
-            else:
-                hookContent = f'Another ally to the Dragon Vibes Den, {userName}, has gone live at https://twitch.tv/{userName} playing {game}. Show your Dragon Vibe Support @here!!'
+        lastNotifStartFile = open("lastNotifStart.json", "r")
+        lastNotifStart = json.load(lastNotifStartFile)
+        lastNotifStartFile.close()
+        
+        if lastNotifStart['data'][0]['started_at'] != body['data'][0]['started_at']:
+            if len(body['data']) > 0:
+                userName = body['data'][0]['user_name']
+                gameId = body['data'][0]['game_id']
                 
-            webhook = DiscordWebhook(url=discWebhookUrl, content=hookContent)
-            webhook.execute()
+                headers = {'Client-ID' : f'{twitchClientID}'}
+                r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}', headers=headers)
+                r = r.json()
+                
+                lastNotifStartFile = open("lastNotifStart.json", "w")
+                json.dump(body, lastNotifStartFile)
+                lastNotifStartFile.close()
+                
+                print(r)
+                print("-------------------------------")
+                
+                if len(r['data']) == 0:
+                    game = "NULL"
+                else:
+                    game = r['data'][0]['name']
+                
+                if(userName == "dracoasier"):
+                    hookContent = f'Your favorite Dragon Vibes provider DracoAsier has gone live at https://twitch.tv/dracoasier playing {game}. Show him your Dragon Vibe Support. @here'
+                else:
+                    hookContent = f'Another ally to the Dragon Vibes Den, {userName}, has gone live at https://twitch.tv/{userName} playing {game}. Show your Dragon Vibe Support @here!!'
+                    
+                webhook = DiscordWebhook(url=discWebhookUrl, content=hookContent)
+                webhook.execute()

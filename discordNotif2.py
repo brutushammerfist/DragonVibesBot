@@ -23,9 +23,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
-        body = self.rfile.read(content_length)
-        body2 = body.json()
-        print(body2)
+        body = self.rfile.read(content_length).decode("UTF-8")
+        body = json.load(body)
+        print(body)
         
 httpd = HTTPServer(('0.0.0.0', 8080), SimpleHTTPRequestHandler)
 

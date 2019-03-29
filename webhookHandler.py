@@ -1,5 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
+from discord_webhook import DiscordWebhook
 import json
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -13,18 +14,34 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
-            #self.wfile.close()
         else:
             self.send_response(200)
             self.end_headers()
             self.wfile.write(("OK").encode("UTF-8"))
-            #self.wfile.close()
         
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         body = self.rfile.read(content_length).decode("UTF-8")
         body = json.loads(body)
         
-#httpd = HTTPServer(('0.0.0.0', 8080), SimpleHTTPRequestHandler)
-
-#httpd.serve_forever()
+        secretsFile = open("secrets.json", "r")
+        secrets = json.load(secretsFile)
+        secretsFile.close()
+        
+        twitchClientID = secrets['twitchClientID']
+        discWebhookUrl = secrets['discWebhookUrl']
+        
+        userName = body['data'][0]['user_name']
+        gameId = body['data'][0]['game_id']
+        
+        headers = {'Client-ID' : f'{twitchClientID}'}
+        r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}')
+        r = r.json()
+        
+        if(userName == "dracoasier"):
+            hookContent = f'Your favorite Dragon Vibes provider DracoAsier has gone live at https://twitch.tv/dracoasier playing {game}. Show him your Dragon Vibe Support. @here'
+        else:
+            hookContent = f'Another ally to the Dragon Vibes Den, {name}, has gone live at https://twitch.tv/{userName} playing {game}. Show your Dragon Vibe Support @here!!'
+            
+        webhook = DiscordWebhook(url=discWebhookUrl, content=hookContent)
+        webhook.execute()

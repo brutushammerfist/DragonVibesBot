@@ -35,7 +35,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         twitchClientID = secrets['twitchClientID']
         discWebhookUrl = secrets['discWebhookUrl']
         
-        if body['data'] > 0:
+        if len(body['data']) > 0:
             userName = body['data'][0]['user_name']
             gameId = body['data'][0]['game_id']
             

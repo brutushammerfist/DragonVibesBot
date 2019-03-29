@@ -17,6 +17,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     #def do_POST(self):
         
         
-httpd = HTTPServer(('localhost', 8080), SimpleHTTPRequestHandler)
+httpd = HTTPServer(('0.0.0.0', 8080), SimpleHTTPRequestHandler)
 
 httpd.serve_forever()

@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from discord_webhook import DiscordWebhook
 import json
 import requests
+import os
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):

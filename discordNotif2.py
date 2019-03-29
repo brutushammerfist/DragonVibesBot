@@ -6,6 +6,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         query = urlparse(self.path).query
         query_components = dict(qc.split("=") for qc in query.split("&"))
         
+        print(self.path)
         self.end_headers()
         
         if (query_components["hub.challenge"]) != None:

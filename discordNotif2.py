@@ -1,24 +1,23 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from urlparse import urlparse
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        content_length = int(self.headers['Content-Length'])
-        get_data = self.rfile.read(content_length)
+        query = urlparse(self.path).query
+        query_components = dict(qc.split("=") for qc in query.split("&"))
         
-        print(get_data)
+        self.end_headers()
         
-        if(get_data["hub.challenge"]) != None:
+        if (query_components["hub.challenge"]) != None:
             self.send_response(200)
-            self.end_headers()
-            self.wfile.write(get_data["hub.challenge"])
+            self.wfile.write(query_components["hub.challenge"])
         else:
             self.send_response(200)
-            self.end_headers()
             self.wfile.write("OK")
         
     #def do_POST(self):
         
         
-httpd = HTTPServer(('0.0.0.0', 8080), SimpleHTTPRequestHandler)
+httpd = HTTPServer(('localhost', 8000), SimpleHTTPRequestHandler)
 
 httpd.serve_forever()

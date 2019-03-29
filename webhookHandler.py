@@ -41,7 +41,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             lastNotifStart = json.load(lastNotifStartFile)
         else:
             lastNotifStart = {
-                "data" = [{
+                "data" : [{
                             'started_at' : 0
                         }]
             }

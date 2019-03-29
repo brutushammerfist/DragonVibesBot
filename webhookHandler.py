@@ -39,6 +39,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}')
         r = r.json()
         
+        game = r['data'][0]['game_id']
+        
         if(userName == "dracoasier"):
             hookContent = f'Your favorite Dragon Vibes provider DracoAsier has gone live at https://twitch.tv/dracoasier playing {game}. Show him your Dragon Vibe Support. @here'
         else:

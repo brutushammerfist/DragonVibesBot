@@ -12,7 +12,7 @@ from random import randrange
 from discord_webhook import DiscordWebhook
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
-import discordNotif2
+import webhookHandler
 
 secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)

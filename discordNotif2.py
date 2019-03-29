@@ -1,5 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
+import json
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -20,8 +21,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(("OK").encode("UTF-8"))
             self.wfile.close()
         
-    #def do_POST(self):
-        
+    def do_POST(self):
+        content_length = int(self.headers['Content-Length'])
+        body = self.rfile.read(content_length)
+        body2 = body.json()
+        print(body2)
         
 httpd = HTTPServer(('0.0.0.0', 8080), SimpleHTTPRequestHandler)
 

@@ -13,6 +13,7 @@ from discord_webhook import DiscordWebhook
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 from webhookHandler import SimpleHTTPRequestHandler
+import threading
 
 secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)
@@ -61,8 +62,9 @@ class Bot(commands.Bot):
         }
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
         print(subscribe.content)
-        httpd = HTTPServer(('0.0.0.0', Port), SimpleHTTPRequestHandler)
-        httpd.serve_forever()
+        httpd = HTTPServer(('0.0.0.0', int(Port)), SimpleHTTPRequestHandler)
+        #httpd.serve_forever()
+        webhookThread = threading.Thread(target=httpd.serve_forever)
         sched = AsyncIOScheduler()
         sched.start()
         job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)

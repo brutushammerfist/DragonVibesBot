@@ -36,7 +36,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         discWebhookUrl = secrets['discWebhookUrl']
         
         lastNotifStartFile = open("lastNotifStart.json", "r")
-        lastNotifStart = json.load(lastNotifStartFile)
+        if os.stat("tokenBank.json").st_size is not 0:
+            lastNotifStart = json.load(lastNotifStartFile)
         lastNotifStartFile.close()
         
         if lastNotifStart['data'][0]['started_at'] != body['data'][0]['started_at']:

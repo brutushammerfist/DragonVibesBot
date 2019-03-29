@@ -12,9 +12,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         if (query_components["hub.challenge"]) != None:
             self.send_response(200)
             self.wfile.write(query_components["hub.challenge"])
+            self.wfile.close()
         else:
             self.send_response(200)
             self.wfile.write("OK")
+            self.wfile.close()
         
     #def do_POST(self):
         

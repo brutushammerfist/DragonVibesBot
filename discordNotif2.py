@@ -9,9 +9,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         
         if(get_data["hub.challenge"]) != None:
             self.send_response(200)
+            self.end_headers()
             self.wfile.write(get_data["hub.challenge"])
         else:
             self.send_response(200)
+            self.end_headers()
             self.wfile.write("OK")
         
     #def do_POST(self):

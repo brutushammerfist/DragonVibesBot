@@ -42,7 +42,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         if(userName == "dracoasier"):
             hookContent = f'Your favorite Dragon Vibes provider DracoAsier has gone live at https://twitch.tv/dracoasier playing {game}. Show him your Dragon Vibe Support. @here'
         else:
-            hookContent = f'Another ally to the Dragon Vibes Den, {name}, has gone live at https://twitch.tv/{userName} playing {game}. Show your Dragon Vibe Support @here!!'
+            hookContent = f'Another ally to the Dragon Vibes Den, {userName}, has gone live at https://twitch.tv/{userName} playing {game}. Show your Dragon Vibe Support @here!!'
             
         webhook = DiscordWebhook(url=discWebhookUrl, content=hookContent)
         webhook.execute()

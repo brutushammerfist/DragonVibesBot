@@ -39,6 +39,12 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         lastNotifStartFile = open("lastNotifStart.json", "r")
         if os.stat("lastNotifStart.json").st_size is not 0:
             lastNotifStart = json.load(lastNotifStartFile)
+        else:
+            lastNotifStart = {
+                "data" = [{
+                            'started_at' : 0
+                        }]
+            }
         lastNotifStartFile.close()
         
         if lastNotifStart['data'][0]['started_at'] != body['data'][0]['started_at']:

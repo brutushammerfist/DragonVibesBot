@@ -39,6 +39,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}')
         r = r.json()
         
+        print(r)
+        
         game = r['data'][0]['game_id']
         
         if(userName == "dracoasier"):

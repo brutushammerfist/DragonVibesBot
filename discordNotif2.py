@@ -7,14 +7,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         query_components = dict(qc.split("=") for qc in query.split("&"))
         
         print(self.path)
-        self.end_headers()
+        #self.end_headers()
         
         if (query_components["hub.challenge"]) != None:
             self.send_response(200)
+            self.end_headers()
             self.wfile.write(query_components["hub.challenge"])
             self.wfile.close()
         else:
             self.send_response(200)
+            self.end_headers()
             self.wfile.write("OK")
             self.wfile.close()
         

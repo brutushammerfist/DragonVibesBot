@@ -39,16 +39,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             userName = body['data'][0]['user_name']
             gameId = body['data'][0]['game_id']
             
-            if gameId == 0:
-                game = "Null"
+            headers = {'Client-ID' : f'{twitchClientID}'}
+            r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}', headers=headers)
+            r = r.json()
+            
+            print(r)
+            print("-------------------------------")
+            
+            if len(r['data']) == 0:
+                game = "NULL"
             else:
-                headers = {'Client-ID' : f'{twitchClientID}'}
-                r = requests.get(f'https://api.twitch.tv/helix/games?id={gameId}', headers=headers)
-                r = r.json()
-                
-                print(r)
-                print("-------------------------------")
-                
                 game = r['data'][0]['name']
             
             if(userName == "dracoasier"):

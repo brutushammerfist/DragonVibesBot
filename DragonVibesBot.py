@@ -10,6 +10,9 @@ import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from random import randrange
 from discord_webhook import DiscordWebhook
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from urllib.parse import urlparse
+import discordNotif2
 
 secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)
@@ -58,6 +61,8 @@ class Bot(commands.Bot):
         }
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
         print(subscribe.content)
+        httpd = HTTPServer(('0.0.0.0', 8080), SimpleHTTPRequestHandler)
+        httpd.serve_forever()
         sched = AsyncIOScheduler()
         sched.start()
         job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)

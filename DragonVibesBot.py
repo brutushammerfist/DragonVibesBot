@@ -66,6 +66,7 @@ class Bot(commands.Bot):
             httpd = HTTPServer(('0.0.0.0', int(Port)), SimpleHTTPRequestHandler)
             httpd.serve_forever()
         webhookThread = threading.Thread(target=httpMain)
+        webhookThread.start()
         sched = AsyncIOScheduler()
         sched.start()
         job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)

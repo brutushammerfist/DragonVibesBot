@@ -418,7 +418,7 @@ class Bot(commands.Bot):
             giveawayPrice = params
             giveawayActive = True
             
-            ctx.send(f'A giveaway has begun! The price for entry is {giveawayPrice} coins!')
+            await ctx.send(f'A giveaway has begun! The price for entry is {giveawayPrice} coins!')
             
     @commands.command(name="gaend")
     async def giveawayEndCommand(self, ctx):
@@ -427,7 +427,7 @@ class Bot(commands.Bot):
             giveawayPrice = 0
             giveawayActive = False
             
-            ctx.send(f'The giveaway has concluded!')
+            await ctx.send(f'The giveaway has concluded!')
             
     @commands.command(name="enter")
     async def enterCommand(self, ctx):
@@ -455,7 +455,7 @@ class Bot(commands.Bot):
             upper = len(giveawayPool) - 1
             winner = randrange(0, upper)
             
-            ctx.send(f'The winner is... {giveawayPool[winner]}!!')
+            await ctx.send(f'The winner is... {giveawayPool[winner]}!!')
     
 bot = Bot()
 bot.run()

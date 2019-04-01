@@ -402,9 +402,9 @@ class Bot(commands.Bot):
             name = params[1]
             
             if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + amount
-                else:
-                    tokenBank[x] = amount
+                tokenBank[x] = tokenBank[x] + amount
+            else:
+                tokenBank[x] = amount
                     
             tokenBankFile = open("tokenBank.json", "w")
             json.dump(tokenBank, tokenBankFile)

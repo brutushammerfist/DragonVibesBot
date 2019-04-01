@@ -1,6 +1,4 @@
 from twitchio.ext import commands
-from twitchio import WebhookMode
-from twitchio import StreamChanged
 import os
 import json
 import requests
@@ -45,6 +43,12 @@ Port = secrets['port']
 modList = ["dracoasier"]
 blackList = []
 
+giveawayPool = []
+giveawayPrice = 0
+giveawayActive = False
+
+coinsCheck = 0
+
 class Bot(commands.Bot):
 
     def __init__(self):
@@ -56,7 +60,7 @@ class Bot(commands.Bot):
         }
         payload = {
             "hub.mode" : "subscribe",
-            "hub.topic" : f'https://api.twitch.tv/helix/streams?user_id=59881217',#{twitchUserID}',
+            "hub.topic" : f'https://api.twitch.tv/helix/streams?user_id={twitchUserID}',
             "hub.callback" : f'http://{extHost}:{Port}',
             "hub.lease_seconds" : "864000"
         }
@@ -69,7 +73,7 @@ class Bot(commands.Bot):
         webhookThread.start()
         sched = AsyncIOScheduler()
         sched.start()
-        job = sched.add_job(self.distributeTokens, 'interval', seconds=300.0)
+        job = sched.add_job(self.distributeCoins, 'interval', seconds=900.0)
 
     # Events don't need decorators when subclassed
     async def event_ready(self):
@@ -219,7 +223,7 @@ class Bot(commands.Bot):
         else:
             await ctx.send(f'This command is for Moderators only!')
     
-    async def distributeTokens(self):
+    async def distributeCoins(self):
         r = requests.get('https://tmi.twitch.tv/group/user/dracoasier/chatters')
         r = r.json()
         #print(r)
@@ -236,84 +240,106 @@ class Bot(commands.Bot):
         tokenBankFile.close()
         
         for x in r['chatters']['vips']:
-            if len(r2['data']) == 0:
+            if len(r2['data']) != 0:
                 if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 300
+                    tokenBank[x] = tokenBank[x] + 1
                 else:
-                    tokenBank[x] = 300
+                    tokenBank[x] = 1
             else:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 150
+                if coinsCheck == 3:
+                    if x in tokenBank:
+                        tokenBank[x] = tokenBank[x] + 1
+                    else:
+                        tokenBank[x] = 1
+                    coinsCheck = 0
                 else:
-                    tokenBank[x] = 150
-                
+                    coinsCheck = coinsCheck + 1
         for x in r['chatters']['moderators']:
-            if len(r2['data']) == 0:
+            if len(r2['data']) != 0:
                 if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 300
+                    tokenBank[x] = tokenBank[x] + 1
                 else:
-                    tokenBank[x] = 300
+                    tokenBank[x] = 1
             else:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 150
+                if coinsCheck == 3:
+                    if x in tokenBank:
+                        tokenBank[x] = tokenBank[x] + 1
+                    else:
+                        tokenBank[x] = 1
+                    coinsCheck = 0
                 else:
-                    tokenBank[x] = 150
+                    coinsCheck = coinsCheck + 1
                 
         for x in r['chatters']['staff']:
-            if len(r2['data']) == 0:
+            if len(r2['data']) != 0:
                 if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 300
+                    tokenBank[x] = tokenBank[x] + 1
                 else:
-                    tokenBank[x] = 300
+                    tokenBank[x] = 1
             else:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 150
+                if coinsCheck == 3:
+                    if x in tokenBank:
+                        tokenBank[x] = tokenBank[x] + 1
+                    else:
+                        tokenBank[x] = 1
+                    coinsCheck = 0
                 else:
-                    tokenBank[x] = 150
+                    coinsCheck = coinsCheck + 1
         
         for x in r['chatters']['admins']:
-            if len(r2['data']) == 0:
+            if len(r2['data']) != 0:
                 if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 300
+                    tokenBank[x] = tokenBank[x] + 1
                 else:
-                    tokenBank[x] = 300
+                    tokenBank[x] = 1
             else:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 150
+                if coinsCheck == 3:
+                    if x in tokenBank:
+                        tokenBank[x] = tokenBank[x] + 1
+                    else:
+                        tokenBank[x] = 1
+                    coinsCheck = 0
                 else:
-                    tokenBank[x] = 150
+                    coinsCheck = coinsCheck + 1
                 
         for x in r['chatters']['global_mods']:
-            if len(r2['data']) == 0:
+            if len(r2['data']) != 0:
                 if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 300
+                    tokenBank[x] = tokenBank[x] + 1
                 else:
-                    tokenBank[x] = 300
+                    tokenBank[x] = 1
             else:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 150
+                if coinsCheck == 3:
+                    if x in tokenBank:
+                        tokenBank[x] = tokenBank[x] + 1
+                    else:
+                        tokenBank[x] = 1
+                    coinsCheck = 0
                 else:
-                    tokenBank[x] = 150
+                    coinsCheck = coinsCheck + 1
                 
         for x in r['chatters']['viewers']:
-            if len(r2['data']) == 0:
+            if len(r2['data']) != 0:
                 if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 300
+                    tokenBank[x] = tokenBank[x] + 1
                 else:
-                    tokenBank[x] = 300
+                    tokenBank[x] = 1
             else:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 150
+                if coinsCheck == 3:
+                    if x in tokenBank:
+                        tokenBank[x] = tokenBank[x] + 1
+                    else:
+                        tokenBank[x] = 1
+                    coinsCheck = 0
                 else:
-                    tokenBank[x] = 150
+                    coinsCheck = coinsCheck + 1
                 
         tokenBankFile = open("tokenBank.json", "w")
         json.dump(tokenBank, tokenBankFile)
         tokenBankFile.close()
         
-    @commands.command(name="tokens")
-    async def tokensCommand(self, ctx):
-        
+    @commands.command(name="coins")
+    async def coinsCommand(self, ctx):
         tokenBank = {}
         tokenBankFile = open("tokenBank.json", "r")
         if os.stat("tokenBank.json").st_size is not 0:
@@ -325,6 +351,7 @@ class Bot(commands.Bot):
         else:
             await ctx.send(f'You have not begun hoarding coins. Hang out in the stream to do so!')
     
+    """
     @commands.command(name="raid")
     async def raidCommand(self, ctx):
         bet = ctx.content
@@ -356,6 +383,79 @@ class Bot(commands.Bot):
             await ctx.send(f'Your raiding party fell through and you were unable to raid the stash. You keep your {rtn} coins.')
         else:
             await ctx.send(f'You manage to sneak in and out of the Dragon\'s lair undetected, returning with {rtn} coins!')
+    """
+    
+    @commands.command(name="givecoins")
+    async def payCommand(self, ctx):
+        if ctx.author.name in modList:
+            tokenBank = {}
+            tokenBankFile = open("tokenBank.json", "r")
+            if os.stat("tokenBank.json").st_size is not 0:
+                tokenBank = json.load(tokenBankFile)
+            tokenBankFile.close()
+            
+            params = ctx.content
+            params = params[11:]
+            params = params.split(" ")
+            
+            amount = int(params[0])
+            name = params[1]
+            
+            if x in tokenBank:
+                    tokenBank[x] = tokenBank[x] + amount
+                else:
+                    tokenBank[x] = amount
+                    
+            tokenBankFile = open("tokenBank.json", "w")
+            json.dump(tokenBank, tokenBankFile)
+            tokenBankFile.close()
+            
+    @commands.command(name="gastart")
+    async def giveawayStartCommand(self, ctx):
+        if ctx.author.name in modList:
+            params = ctx.content
+            params = params[9:]
+            giveawayPrice = params
+            giveawayActive = True
+            
+            ctx.send(f'A giveaway has begun! The price for entry is {giveawayPrice} coins!')
+            
+    @commands.command(name="gaend")
+    async def giveawayEndCommand(self, ctx):
+        if ctx.author.name in modList:
+            giveawayPool.clear()
+            giveawayPrice = 0
+            giveawayActive = False
+            
+            ctx.send(f'The giveaway has concluded!')
+            
+    @commands.command(name="enter")
+    async def enterCommand(self, ctx):
+        tokenBank = {}
+        tokenBankFile = open("tokenBank.json", "r")
+        if os.stat("tokenBank.json").st_size is not 0:
+            tokenBank = json.load(tokenBankFile)
+        tokenBankFile.close()
+        
+        if ctx.author.name in giveawayPool:
+            pass
+        else:
+            if ctx.author.name in tokenBank:
+                if tokenBank[ctx.author.name] >= giveawayPrice:
+                    tokenBank[ctx.author.name] = tokenBank[ctx.author.name] - giveawayPrice
+                    giveawayPool.append(ctx.author.name)
+                
+            tokenBankFile = open("tokenBank.json", "w")
+            json.dump(tokenBank, tokenBankFile)
+            tokenBankFile.close()
+        
+    @commands.command(name="pull")
+    async def pullCommand(self, ctx):
+        if ctx.author.name in modList:
+            upper = len(giveawayPool) - 1
+            winner = randrange(0, upper)
+            
+            ctx.send(f'The winner is... {giveawayPool[winner]}!!')
     
 bot = Bot()
 bot.run()

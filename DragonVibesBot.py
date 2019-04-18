@@ -1,4 +1,5 @@
 from twitchio.ext import commands
+from twitchio import *
 import os
 import json
 import requests
@@ -39,17 +40,19 @@ tweetAPI = twitter.Api(consumer_key=tweetConsumerKey,
 locHost = secrets['local_host']
 extHost = secrets['external_host']
 Port = secrets['port']
- 
-modList = ["dracoasier"]
-blackList = []
-
-giveawayPool = []
-giveawayPrice = 0
-giveawayActive = False
-
-coinsCheck = 0
 
 class Bot(commands.Bot):
+    
+    commandSched = AsyncIOScheduler()
+    
+    coinsCheck = 0
+    
+    giveawayPool = []
+    giveawayPrice = 0
+    giveawayActive = False
+    
+    modList = ["dracoasier", "brutushammerfist"]
+    blackList = []
 
     def __init__(self):
         super().__init__(irc_token=twitchIRCToken, client_id=twitchClientID, nick='DragonVibesBot', prefix='!',
@@ -71,9 +74,12 @@ class Bot(commands.Bot):
             httpd.serve_forever()
         webhookThread = threading.Thread(target=httpMain)
         webhookThread.start()
-        sched = AsyncIOScheduler()
-        sched.start()
-        job = sched.add_job(self.distributeCoins, 'interval', seconds=900.0)
+        self.commandSched = AsyncIOScheduler()
+        self.commandSched.start()
+        self.commandSched.add_job(self.distributeCoins, 'interval', seconds=10)#900.0)
+        print(self.commandSched.get_jobs())
+        #commandSched = AsyncIOScheduler()
+        #commandSched.start()
 
     # Events don't need decorators when subclassed
     async def event_ready(self):
@@ -82,7 +88,7 @@ class Bot(commands.Bot):
     async def event_message(self, message):
         print(message.author.name + " : " + message.content)
         
-        for x in blackList:
+        for x in self.blackList:
             if x in message.content:
                 try:
                     ctx = await self.get_context(message)
@@ -111,7 +117,7 @@ class Bot(commands.Bot):
         
     async def event_userstate(self, user):
         if user.is_mod:
-            modList.append(user.name)
+            self.modList.append(user.name)
         
     # Commands use a decorator...
     @commands.command(name='test')
@@ -126,12 +132,13 @@ class Bot(commands.Bot):
     async def artistCommand(self, ctx):
         await ctx.send(f'The various artists seen on my channel Ms. Cannibalistic-tendencies (Main artist of backgrounds and current emotes) Twitter: @CannibalDragon -- Seoxys (Sub Badge artist) Twitter: @SeoxysArt -- Zorryn (3D artist) Twitter: @zorryn_art -- LindseyVi (Notification animator) Twitter: @LindseyVi__')
     
+    """
     @commands.command(name='echo')
     async def echoCommand(self, ctx):
         msg = ctx.content
         msg = msg[6:]
         
-        await ctx.send(msg)
+        await ctx.send(msg)"""
         
     @commands.command(name='uptime')
     async def uptimeCommand(self, ctx):
@@ -175,7 +182,7 @@ class Bot(commands.Bot):
         
     @commands.command(name="addcom")
     async def addCommand(self, ctx):
-        if ctx.author.name in modList:
+        if ctx.author.name in self.modList:
             cmd = ctx.content
             cmd = cmd[8:]
             
@@ -200,7 +207,7 @@ class Bot(commands.Bot):
             
     @commands.command(name="delcom")
     async def delCommand(self, ctx):
-        if ctx.author.name in modList:
+        if ctx.author.name in self.modList:
             cmd = ctx.content
             cmd = cmd[8:]
             
@@ -239,101 +246,29 @@ class Bot(commands.Bot):
             tokenBank = json.load(tokenBankFile)
         tokenBankFile.close()
         
-        for x in r['chatters']['vips']:
-            if len(r2['data']) != 0:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 1
-                else:
-                    tokenBank[x] = 1
-            else:
-                if coinsCheck == 3:
-                    if x in tokenBank:
-                        tokenBank[x] = tokenBank[x] + 1
-                    else:
-                        tokenBank[x] = 1
-                    coinsCheck = 0
-                else:
-                    coinsCheck = coinsCheck + 1
-        for x in r['chatters']['moderators']:
-            if len(r2['data']) != 0:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 1
-                else:
-                    tokenBank[x] = 1
-            else:
-                if coinsCheck == 3:
-                    if x in tokenBank:
-                        tokenBank[x] = tokenBank[x] + 1
-                    else:
-                        tokenBank[x] = 1
-                    coinsCheck = 0
-                else:
-                    coinsCheck = coinsCheck + 1
-                
-        for x in r['chatters']['staff']:
-            if len(r2['data']) != 0:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 1
-                else:
-                    tokenBank[x] = 1
-            else:
-                if coinsCheck == 3:
-                    if x in tokenBank:
-                        tokenBank[x] = tokenBank[x] + 1
-                    else:
-                        tokenBank[x] = 1
-                    coinsCheck = 0
-                else:
-                    coinsCheck = coinsCheck + 1
+        categories = ['vips', 'moderators', 'staff', 'admins', 'global_mods', 'viewers']
         
-        for x in r['chatters']['admins']:
-            if len(r2['data']) != 0:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 1
-                else:
-                    tokenBank[x] = 1
-            else:
-                if coinsCheck == 3:
+        def checkAndDist(tokenBank, category):
+            for x in r['chatters'][category]:
+                if len(r2['data']) != 0:
                     if x in tokenBank:
                         tokenBank[x] = tokenBank[x] + 1
                     else:
                         tokenBank[x] = 1
-                    coinsCheck = 0
                 else:
-                    coinsCheck = coinsCheck + 1
-                
-        for x in r['chatters']['global_mods']:
-            if len(r2['data']) != 0:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 1
-                else:
-                    tokenBank[x] = 1
-            else:
-                if coinsCheck == 3:
-                    if x in tokenBank:
-                        tokenBank[x] = tokenBank[x] + 1
+                    if self.coinsCheck == 3:
+                        if x in tokenBank:
+                            tokenBank[x] = tokenBank[x] + 1
+                        else:
+                            tokenBank[x] = 1
+                        self.coinsCheck = 0
                     else:
-                        tokenBank[x] = 1
-                    coinsCheck = 0
-                else:
-                    coinsCheck = coinsCheck + 1
-                
-        for x in r['chatters']['viewers']:
-            if len(r2['data']) != 0:
-                if x in tokenBank:
-                    tokenBank[x] = tokenBank[x] + 1
-                else:
-                    tokenBank[x] = 1
-            else:
-                if coinsCheck == 3:
-                    if x in tokenBank:
-                        tokenBank[x] = tokenBank[x] + 1
-                    else:
-                        tokenBank[x] = 1
-                    coinsCheck = 0
-                else:
-                    coinsCheck = coinsCheck + 1
-                
+                        self.coinsCheck = self.coinsCheck + 1
+                        
+        for x in categories:
+            checkAndDist(tokenBank, x)
+            #print("Running Category: " + x)
+            
         tokenBankFile = open("tokenBank.json", "w")
         json.dump(tokenBank, tokenBankFile)
         tokenBankFile.close()
@@ -387,7 +322,7 @@ class Bot(commands.Bot):
     
     @commands.command(name="givecoins")
     async def payCommand(self, ctx):
-        if ctx.author.name in modList:
+        if ctx.author.name in self.modList:
             tokenBank = {}
             tokenBankFile = open("tokenBank.json", "r")
             if os.stat("tokenBank.json").st_size is not 0:
@@ -412,20 +347,20 @@ class Bot(commands.Bot):
             
     @commands.command(name="gastart")
     async def giveawayStartCommand(self, ctx):
-        if ctx.author.name in modList:
+        if ctx.author.name in self.modList:
             params = ctx.content
             params = params[9:]
-            giveawayPrice = params
-            giveawayActive = True
+            self.giveawayPrice = params
+            self.giveawayActive = True
             
             await ctx.send(f'A giveaway has begun! The price for entry is {giveawayPrice} coins!')
             
     @commands.command(name="gaend")
     async def giveawayEndCommand(self, ctx):
-        if ctx.author.name in modList:
-            giveawayPool.clear()
-            giveawayPrice = 0
-            giveawayActive = False
+        if ctx.author.name in self.modList:
+            self.giveawayPool.clear()
+            self.giveawayPrice = 0
+            self.giveawayActive = False
             
             await ctx.send(f'The giveaway has concluded!')
             
@@ -437,13 +372,13 @@ class Bot(commands.Bot):
             tokenBank = json.load(tokenBankFile)
         tokenBankFile.close()
         
-        if ctx.author.name in giveawayPool:
+        if ctx.author.name in self.giveawayPool:
             pass
         else:
             if ctx.author.name in tokenBank:
-                if tokenBank[ctx.author.name] >= giveawayPrice:
-                    tokenBank[ctx.author.name] = tokenBank[ctx.author.name] - giveawayPrice
-                    giveawayPool.append(ctx.author.name)
+                if tokenBank[ctx.author.name] >= self.giveawayPrice:
+                    tokenBank[ctx.author.name] = tokenBank[ctx.author.name] - self.giveawayPrice
+                    self.giveawayPool.append(ctx.author.name)
                 
             tokenBankFile = open("tokenBank.json", "w")
             json.dump(tokenBank, tokenBankFile)
@@ -451,11 +386,38 @@ class Bot(commands.Bot):
         
     @commands.command(name="pull")
     async def pullCommand(self, ctx):
-        if ctx.author.name in modList:
+        if ctx.author.name in self.modList:
             upper = len(giveawayPool) - 1
             winner = randrange(0, upper)
             
             await ctx.send(f'The winner is... {giveawayPool[winner]}!!')
+    
+    @commands.command(name="comschedule")
+    async def scheduleCommand(self, ctx):
+        if ctx.author.name in self.modList:
+            params = ctx.content
+            params = params[13:]
+            params = params.split(" ")
+            
+            if params[1] == "stop":
+                currentJobs = self.commandSched.get_jobs()
+                for x in range(0, len(currentJobs) - 1):
+                    print(currentJobs[x].name)
+                    if params[0] in currentJobs[x].name:
+                        self.commandSched.remove_job(currentJobs[x].id)
+            elif params[1] == "start":
+                cmds = {
+                    'prime' : self.primeCommand._callback,
+                    'uptime' : self.uptimeCommand._callback,
+                    'artist' : self.artistCommand._callback,
+                    'tweet' : self.tweetCommand._callback
+                }
+                print(cmds[params[0]])
+                self.commandSched.add_job(cmds[params[0]], 'interval', [self, ctx], seconds=int(params[2]))
+                print("Command scheduled!")
+            
+            print(self.commandSched.get_jobs())
+            
     
 bot = Bot()
 bot.run()

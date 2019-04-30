@@ -77,10 +77,7 @@ class Bot(commands.Bot):
         self.commandSched = AsyncIOScheduler()
         self.commandSched.add_job(self.distributeCoins, 'interval', seconds=10)#900.0)
         print(self.commandSched.get_jobs())
-        #commandSched = AsyncIOScheduler()
-        #commandSched.start()
 
-    # Events don't need decorators when subclassed
     async def event_ready(self):
         print(f'Ready | {self.nick}')
 
@@ -118,7 +115,6 @@ class Bot(commands.Bot):
         if user.is_mod:
             self.modList.append(user.name)
         
-    # Commands use a decorator...
     @commands.command(name='test')
     async def testCommand(self, ctx):
         await ctx.send(f'Hello {ctx.author.name}!')
@@ -130,14 +126,6 @@ class Bot(commands.Bot):
     @commands.command(name='artist')
     async def artistCommand(self, ctx):
         await ctx.send(f'The various artists seen on my channel Ms. Cannibalistic-tendencies (Main artist of backgrounds and current emotes) Twitter: @CannibalDragon -- Seoxys (Sub Badge artist) Twitter: @SeoxysArt -- Zorryn (3D artist) Twitter: @zorryn_art -- LindseyVi (Notification animator) Twitter: @LindseyVi__')
-    
-    """
-    @commands.command(name='echo')
-    async def echoCommand(self, ctx):
-        msg = ctx.content
-        msg = msg[6:]
-        
-        await ctx.send(msg)"""
         
     @commands.command(name='uptime')
     async def uptimeCommand(self, ctx):
@@ -284,40 +272,6 @@ class Bot(commands.Bot):
             await ctx.send(f'You have hoarded {tokenBank[ctx.author.name]} coins.')
         else:
             await ctx.send(f'You have not begun hoarding coins. Hang out in the stream to do so!')
-    
-    """
-    @commands.command(name="raid")
-    async def raidCommand(self, ctx):
-        bet = ctx.content
-        bet = bet[6:]
-        bet = int(bet)
-        
-        tokenBank = {}
-        tokenBankFile = open("tokenBank.json", "r")
-        if os.stat("tokenBank.json").st_size is not 0:
-            tokenBank = json.load(tokenBankFile)
-        tokenBankFile.close()
-        
-        tokenBank[ctx.author.name] = tokenBank[ctx.author.name] - bet
-        
-        upper = (bet * 2) + 1
-        rtn = randrange(0, upper)
-        
-        tokenBank[ctx.author.name] = tokenBank[ctx.author.name] + rtn
-        
-        tokenBankFile = open("tokenBank.json", "w")
-        json.dump(tokenBank, tokenBankFile)
-        tokenBankFile.close()
-        
-        if rtn == 0:
-            await ctx.send(f'The entire raiding party wiped. You have lost all of your coin and barely escaped!')
-        elif rtn < bet:
-            await ctx.send(f'Several of your party fell during the raid, but you were able to mitigate your losses with {rtn} coins.')
-        elif rtn == bet:
-            await ctx.send(f'Your raiding party fell through and you were unable to raid the stash. You keep your {rtn} coins.')
-        else:
-            await ctx.send(f'You manage to sneak in and out of the Dragon\'s lair undetected, returning with {rtn} coins!')
-    """
     
     @commands.command(name="givecoins")
     async def payCommand(self, ctx):

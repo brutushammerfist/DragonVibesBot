@@ -75,7 +75,6 @@ class Bot(commands.Bot):
         webhookThread = threading.Thread(target=httpMain)
         webhookThread.start()
         self.commandSched = AsyncIOScheduler()
-        self.commandSched.start()
         self.commandSched.add_job(self.distributeCoins, 'interval', seconds=10)#900.0)
         print(self.commandSched.get_jobs())
         #commandSched = AsyncIOScheduler()

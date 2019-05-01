@@ -60,7 +60,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                 response = index.read()
 
             #self.wfile.write(bytes(json.dumps(response), 'utf-8'))
-            self.wfile.write(bytes(response, 'html'))
+            self.wfile.write(bytes(response, 'utf-8'))
         else:
             self.do_AUTHHEAD()
 

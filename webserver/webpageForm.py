@@ -43,10 +43,10 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
 
             getvars = self._parse_GET()
 
-            response = {
-                'path': self.path,
-                'get_vars': str(getvars)
-            }
+            #response = {
+            #    'path': self.path,
+            #    'get_vars': str(getvars)
+            #}
 
             base_path = urlparse(self.path).path
             if base_path == '/path1':

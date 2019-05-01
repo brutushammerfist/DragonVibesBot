@@ -56,11 +56,18 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                 # Do some work
                 pass
             
-            with open("index.html", "r") as index:
-                response = index.read()
-
-                #self.wfile.write(bytes(json.dumps(response), 'utf-8'))
-                self.wfile.write(bytes(response, 'utf-8'))
+            #with open("index.html", "r") as index:
+            #    response = index.read()
+            response = """
+            <html>
+                <head><title>Bruh</title></head>
+                <body>
+                    <marquee>Bruh bruh bruh bruh</marquee>
+                </body>
+            </html>
+            """
+            #self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+            self.wfile.write(bytes(response, 'utf-8'))
         else:
             self.do_AUTHHEAD()
 

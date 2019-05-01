@@ -306,7 +306,7 @@ class Bot(commands.Bot):
             self.giveawayPrice = params
             self.giveawayActive = True
             
-            await ctx.send(f'A giveaway has begun! The price for entry is {giveawayPrice} coins!')
+            await ctx.send(f'A giveaway has begun! The price for entry is {str(self.giveawayPrice)} coins!')
             
     @commands.command(name="gaend")
     async def giveawayEndCommand(self, ctx):

@@ -157,5 +157,5 @@ class CustomHTTPServer(http.server.HTTPServer):
 
 if __name__ == '__main__':
     server = CustomHTTPServer(('0.0.0.0', 8080))
-    server.set_auth('demo', 'demo')
+    server.set_auth('DracoAsier', 'dragonvibes')
     server.serve_forever()

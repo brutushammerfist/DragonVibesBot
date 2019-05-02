@@ -12,7 +12,8 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         self.send_response(200)
-        self.send_header('Content-type', 'application/json')
+        #self.send_header('Content-type', 'application/json')
+        self.send_header('Content-type', 'text/html')
         self.end_headers()
 
     def do_AUTHHEAD(self):
@@ -56,14 +57,9 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                 # Do some work
                 pass
             
-            #with open("index.html", "r") as index:
-            #    response = index.read()
-            response = """<html>
-    <head><title>Bruh</title></head>
-    <body>
-        <marquee>Bruh bruh bruh bruh</marquee>
-    </body>
-</html>"""
+            with open("index.html", "r") as index:
+                response = index.read()
+            
             #self.wfile.write(bytes(json.dumps(response), 'utf-8'))
             self.wfile.write(bytes(response, 'utf-8'))
         else:

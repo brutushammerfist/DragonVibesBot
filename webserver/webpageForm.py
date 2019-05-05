@@ -4,6 +4,7 @@ import base64
 import json
 import asyncio
 import websockets
+import os
 from urllib.parse import urlparse, parse_qs
 
 """
@@ -40,33 +41,35 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
         elif self.headers.get('Authorization') == 'Basic ' + str(key):
-            self.send_response(200)
-            #self.send_header('Content-type', 'application/json')
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
+            #self.send_response(200)
+            #self.send_header('Content-type', 'text/html')
+            #self.end_headers()
 
             getvars = self._parse_GET()
 
-            #response = {
-            #    'path': self.path,
-            #    'get_vars': str(getvars)
-            #}
-
             base_path = urlparse(self.path).path
-            if base_path == '/path1':
-                # Do some work
-                pass
-            elif base_path == '/path2':
-                # Do some work
-                pass
-            
             print(base_path)
+            if base_path == '/':
+                with open("index.html", "r") as index:
+                    response = index.read()
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                self.wfile.write(bytes(response, 'utf-8'))
+            elif base_path.endswith(".mp3"):
+                if os.stat(base_path).st_size is not 0:
+                    file = open(os.curdir + os.sep + base_path)
+                    length = os.stat(base_path).st_size
+                    data = file.read()
+                    
+                    self.send_response(200)
+                    self.send_header('Content-type', 'audio/mpeg')
+                    self.send_header('Content-Length', length)
+                    self.end_headers()
+                    self.wfile.write(data)
+                    file.close()
             
-            with open("index.html", "r") as index:
-                response = index.read()
-            
-            #self.wfile.write(bytes(json.dumps(response), 'utf-8'))
-            self.wfile.write(bytes(response, 'utf-8'))
         else:
             self.do_AUTHHEAD()
 
@@ -163,15 +166,16 @@ class CustomHTTPServer(http.server.HTTPServer):
 
     def get_auth_key(self):
         return self.key
-
-async def hello(websocket, path):
-        name = await websocket.recv()
-        print(f"< {name}")
         
-        greeting = f"Hello {name}!"
+async def hello():
+    async with websockets.connect('ws://0.0.0.0:8765') as websocket:
+        name = input("What's your name? ")
         
-        await websocket.send(greeting)
-        print(f"> {greeting}")
+        await websocket.send(name)
+        print(f"> {name}")
+        
+        greeting = await websocket.recv()
+        print(f"< {greeting}")
 
 if __name__ == '__main__':
     server = CustomHTTPServer(('0.0.0.0', 8080))
@@ -183,8 +187,3 @@ if __name__ == '__main__':
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     server.serve_forever()
-    
-    start_server = websockets.serve(hello, '0.0.0.0', 8765)
-    
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()

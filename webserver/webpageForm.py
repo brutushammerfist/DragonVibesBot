@@ -60,6 +60,8 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                 # Do some work
                 pass
             
+            print(base_path)
+            
             with open("index.html", "r") as index:
                 response = index.read()
             

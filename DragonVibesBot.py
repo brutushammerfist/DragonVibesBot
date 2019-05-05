@@ -381,18 +381,6 @@ class Bot(commands.Bot):
                 print("Command scheduled!")
             
             print(self.commandSched.get_jobs())
-            
-    @commands.command(name="scare")
-    async def scareCommand(self, ctx):
-        async with websockets.connect(f'ws://{extHost}:8765') as websocket:
-            name = input("What's your name? ")
-            
-            await websocket.send(name)
-            print(f"> {name}")
-            
-            greeting = await websocket.recv()
-            print(f"< {greeting}")
     
 bot = Bot()
 bot.run()
-asyncio.get_event_loop().run_until_complete(bot.scareCommand()._callback)

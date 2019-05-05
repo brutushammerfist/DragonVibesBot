@@ -2,6 +2,8 @@ import http.server
 import cgi
 import base64
 import json
+import asyncio
+import websockets
 from urllib.parse import urlparse, parse_qs
 
 """
@@ -160,6 +162,14 @@ class CustomHTTPServer(http.server.HTTPServer):
     def get_auth_key(self):
         return self.key
 
+async def hello(websocket, path):
+        name = await websocket.recv()
+        print(f"< {name}")
+        
+        greeting = f"Hello {name}!"
+        
+        await websocket.send(greeting)
+        print(f"> {greeting}")
 
 if __name__ == '__main__':
     server = CustomHTTPServer(('0.0.0.0', 8080))
@@ -171,3 +181,8 @@ if __name__ == '__main__':
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     server.serve_forever()
+    
+    start_server = websockets.serve(hello, '0.0.0.0', 8765)
+    
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()

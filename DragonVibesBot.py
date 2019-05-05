@@ -72,12 +72,22 @@ class Bot(commands.Bot):
         def httpMain():
             httpd = HTTPServer(('0.0.0.0', int(Port)), SimpleHTTPRequestHandler)
             httpd.serve_forever()
+        
         webhookThread = threading.Thread(target=httpMain)
         webhookThread.start()
         self.commandSched = AsyncIOScheduler()
         self.commandSched.add_job(self.distributeCoins, 'interval', seconds=10)#900.0)
         print(self.commandSched.get_jobs())
 
+    """async def hello(websocket, path):
+        name = await websocket.recv()
+        print(f"< {name}")
+        
+        greeting = f"Hello {name}!"
+        
+        await websocket.send(greeting)
+        print(f"> {greeting}")"""
+    
     async def event_ready(self):
         print(f'Ready | {self.nick}')
 

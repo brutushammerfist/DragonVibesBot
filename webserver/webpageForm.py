@@ -58,10 +58,9 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(bytes(response, 'utf-8'))
             elif base_path.endswith(".mp3"):
-                if os.stat(base_path).st_size is not 0:
-                    #file = open(os.curdir + os.sep + base_path)
-                    base_path = base_path[1:]
-                    file = open("." + base_path)
+                if os.stat("." + base_path).st_size is not 0:
+                    file = open(os.curdir + os.sep + base_path)
+                    #file = open("." + base_path)
                     length = os.stat(base_path).st_size
                     data = file.read()
                     

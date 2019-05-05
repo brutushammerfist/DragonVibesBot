@@ -71,7 +71,7 @@ class Bot(commands.Bot):
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
         print(subscribe.content)
         def httpMain():
-            httpd = HTTPServer(('0.0.0.0', int(Port)), SimpleHTTPRequestHandler)
+            httpd = HTTPServer(('0.0.0.0', 8004, SimpleHTTPRequestHandler)#int(Port)), SimpleHTTPRequestHandler)
             httpd.serve_forever()
         
         webhookThread = threading.Thread(target=httpMain)
@@ -79,7 +79,7 @@ class Bot(commands.Bot):
         self.commandSched = AsyncIOScheduler()
         self.commandSched.add_job(self.distributeCoins, 'interval', seconds=900.0)
         print(self.commandSched.get_jobs())
-        start_server = websockets.serve(bot.hello, '0.0.0.0', 8765)
+        start_server = websockets.serve(self.hello, '0.0.0.0', 8765)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
 

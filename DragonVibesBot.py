@@ -13,6 +13,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 from webhookHandler import SimpleHTTPRequestHandler
 import threading
+import websockets
 
 secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)

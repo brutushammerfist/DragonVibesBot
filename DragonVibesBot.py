@@ -71,7 +71,7 @@ class Bot(commands.Bot):
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
         print(subscribe.content)
         def httpMain():
-            httpd = HTTPServer(('0.0.0.0', 8004, SimpleHTTPRequestHandler)#int(Port)), SimpleHTTPRequestHandler)
+            httpd = HTTPServer(('0.0.0.0', 8004), SimpleHTTPRequestHandler)#int(Port)), SimpleHTTPRequestHandler)
             httpd.serve_forever()
         
         webhookThread = threading.Thread(target=httpMain)

@@ -170,7 +170,7 @@ class CustomHTTPServer(http.server.HTTPServer):
     def get_auth_key(self):
         return self.key
         
-async def hello():
+"""async def hello():
     async with websockets.connect('ws://0.0.0.0:8765') as websocket:
         name = input("What's your name? ")
         
@@ -178,7 +178,16 @@ async def hello():
         print(f"> {name}")
         
         greeting = await websocket.recv()
-        print(f"< {greeting}")
+        print(f"< {greeting}")"""
+        
+async def hello(self, websocket, path):
+        name = await websocket.recv()
+        print(f"< {name}")
+        
+        greeting = f"Hello {name}!"
+        
+        await websocket.send(greeting)
+        print(f"> {greeting}")
 
 if __name__ == '__main__':
     server = CustomHTTPServer(('0.0.0.0', 8080))
@@ -191,6 +200,6 @@ if __name__ == '__main__':
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     server.serve_forever()
     
-    start_server = websockets.serve(hello, '70.161.83.122', 8765)
+    start_server = websockets.serve(hello, '0.0.0.0', 8765)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()

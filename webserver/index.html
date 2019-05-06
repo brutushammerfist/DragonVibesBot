@@ -22,4 +22,11 @@
             
         </form>
     </body>
+    <script type="text/javascript">
+        webSocket = new WebSocket('70.161.83.122:8765')
+        
+        webSocket.onmessage = function (event) {
+            event.data.play()
+        }
+    </script>
 </html>

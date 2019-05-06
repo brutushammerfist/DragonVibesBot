@@ -190,3 +190,7 @@ if __name__ == '__main__':
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     server.serve_forever()
+    
+    start_server = websockets.serve(hello, '0.0.0.0', 8765)
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()

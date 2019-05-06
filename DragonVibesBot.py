@@ -94,7 +94,7 @@ class Bot(commands.Bot):
         print(f"> {greeting}")"""
         
     async def hello(self):
-        async with websockets.connect('ws://0.0.0.0:8765') as websocket:
+        async with websockets.connect('ws://70.161.83.122:8765') as websocket:
             name = input("What's your name? ")
         
             await websocket.send(name)

@@ -82,7 +82,7 @@ class Bot(commands.Bot):
         asyncio.get_event_loop().run_until_complete(self.hello())
         
     async def hello(self):
-        async with websockets.connect('ws://0.0.0.0:8765') as websocket:
+        async with websockets.connect('ws://70.161.83.122:8765') as websocket:
             name = input("What's your name? ")
             
             await websocket.send(name)

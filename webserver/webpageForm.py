@@ -201,9 +201,6 @@ if __name__ == '__main__':
     socketThread = threading.Thread(target=socketMain)
     socketThread.start()
     
-    temp = threading.local()
-    temp.printBruh()
-    
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     server.serve_forever()

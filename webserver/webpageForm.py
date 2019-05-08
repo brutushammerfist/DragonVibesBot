@@ -199,12 +199,12 @@ if __name__ == '__main__':
         socketServer.serveforever()"""
     
     socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
-    
+    """
     socketThread = threading.Thread(target=socketServer.serveforever())
     socketThread.start()
     
     testThread = threading.Thread(target=socketServer.printBruh())
-    testThread.start()
+    testThread.start()"""
     
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])

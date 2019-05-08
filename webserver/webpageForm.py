@@ -209,6 +209,6 @@ if __name__ == '__main__':
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     #server.serve_forever()
-    
+    """
     serverThread = threading.Thread(target=server.serve_forever())
-    serverThread.start()
+    serverThread.start()"""

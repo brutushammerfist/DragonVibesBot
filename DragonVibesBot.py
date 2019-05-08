@@ -72,7 +72,6 @@ class Bot(commands.Bot):
         def httpMain():
             httpd = HTTPServer(('0.0.0.0', 8004), SimpleHTTPRequestHandler)#int(Port)), SimpleHTTPRequestHandler)
             httpd.serve_forever()
-        
         webhookThread = threading.Thread(target=httpMain)
         webhookThread.start()
         self.commandSched = AsyncIOScheduler()

@@ -4,6 +4,7 @@ import base64
 import json
 import asyncio
 import os
+import threading
 from urllib.parse import urlparse, parse_qs
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
@@ -190,7 +191,13 @@ if __name__ == '__main__':
     secrets = json.load(secretsFile)
     secretsFile.close()
     
+    def socketMain():
+        socketServer = SimpleWebSocketServer('', 8765, SimpleEcho)
+        socketServer.serveforever()
+    
+    socketThread = threading.Thread(target=socketMain)
+    socketThread.start()
+    
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     server.serve_forever()
-    print("Bruh")

@@ -13,7 +13,6 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 from webhookHandler import SimpleHTTPRequestHandler
 import threading
-import websockets
 
 secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)
@@ -79,16 +78,6 @@ class Bot(commands.Bot):
         self.commandSched = AsyncIOScheduler()
         self.commandSched.add_job(self.distributeCoins, 'interval', seconds=900.0)
         print(self.commandSched.get_jobs())
-        
-    async def hello(self):
-        async with websockets.connect('ws://70.161.83.122:8765') as websocket:
-            name = input("What's your name? ")
-        
-            await websocket.send(name)
-            print(f"> {name}")
-        
-            greeting = await websocket.recv()
-            print(f"< {greeting}")
     
     async def event_ready(self):
         print(f'Ready | {self.nick}')

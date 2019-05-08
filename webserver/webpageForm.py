@@ -3,9 +3,9 @@ import cgi
 import base64
 import json
 import asyncio
-import websockets
 import os
 from urllib.parse import urlparse, parse_qs
+from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
 """
     Based upon work at https://gist.github.com/dragermrb/108158f5a284b5fba806
@@ -156,7 +156,6 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
 
         return getvars
 
-
 class CustomHTTPServer(http.server.HTTPServer):
     key = ''
 
@@ -170,24 +169,19 @@ class CustomHTTPServer(http.server.HTTPServer):
     def get_auth_key(self):
         return self.key
         
-"""async def hello():
-    async with websockets.connect('ws://0.0.0.0:8765') as websocket:
-        name = input("What's your name? ")
+"""
+    Based upon work at https://github.com/dpallot/simple-websocket-server
+"""
+
+class SimpleEcho(Websocket):
+    def handleMessage(self):
+        self.sendMessage(self.data)
         
-        await websocket.send(name)
-        print(f"> {name}")
+    def handleConnected(self):
+        print(self.address, 'connected')
         
-        greeting = await websocket.recv()
-        print(f"< {greeting}")"""
-        
-async def hello(self, websocket, path):
-        name = await websocket.recv()
-        print(f"< {name}")
-        
-        greeting = f"Hello {name}!"
-        
-        await websocket.send(greeting)
-        print(f"> {greeting}")
+    def handleClose(self):
+        print(self.address, 'closed')
 
 if __name__ == '__main__':
     server = CustomHTTPServer(('0.0.0.0', 8080))
@@ -199,7 +193,4 @@ if __name__ == '__main__':
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     server.serve_forever()
-    
-    start_server = websockets.serve(hello, '0.0.0.0', 8765)
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+    print("Bruh")

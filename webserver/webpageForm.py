@@ -192,7 +192,7 @@ if __name__ == '__main__':
     secretsFile.close()
     
     def socketMain():
-        socketServer = SimpleWebSocketServer('', 8765, SimpleEcho)
+        socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
         socketServer.serveforever()
     
     socketThread = threading.Thread(target=socketMain)

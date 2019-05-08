@@ -26,7 +26,7 @@
         webSocket = new WebSocket('ws://70.161.83.122:8765')
         
         webSocket.onmessage = function (event) {
-            event.data.play()
+            console.log(event.data)
         }
     </script>
 </html>

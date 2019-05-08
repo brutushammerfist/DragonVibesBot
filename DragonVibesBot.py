@@ -79,19 +79,6 @@ class Bot(commands.Bot):
         self.commandSched = AsyncIOScheduler()
         self.commandSched.add_job(self.distributeCoins, 'interval', seconds=900.0)
         print(self.commandSched.get_jobs())
-        asyncio.get_event_loop().run_until_complete(self.hello())
-        """start_server = websockets.serve(self.hello, '0.0.0.0', 8765)
-        asyncio.get_event_loop().run_until_complete(start_server)
-        asyncio.get_event_loop().run_forever()
-
-    async def hello(self, websocket, path):
-        name = await websocket.recv()
-        print(f"< {name}")
-        
-        greeting = f"Hello {name}!"
-        
-        await websocket.send(greeting)
-        print(f"> {greeting}")"""
         
     async def hello(self):
         async with websockets.connect('ws://70.161.83.122:8765') as websocket:

@@ -173,7 +173,7 @@ class CustomHTTPServer(http.server.HTTPServer):
     Based upon work at https://github.com/dpallot/simple-websocket-server
 """
 
-class SimpleEcho(Websocket):
+class SimpleEcho(WebSocket):
     def handleMessage(self):
         self.sendMessage(self.data)
         

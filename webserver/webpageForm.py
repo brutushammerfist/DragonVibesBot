@@ -194,12 +194,17 @@ if __name__ == '__main__':
     secrets = json.load(secretsFile)
     secretsFile.close()
     
-    def socketMain():
+    """def socketMain():
         socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
-        socketServer.serveforever()
+        socketServer.serveforever()"""
     
-    socketThread = threading.Thread(target=socketMain)
+    socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
+    
+    socketThread = threading.Thread(target=socketServer.serveforever())
     socketThread.start()
+    
+    testThread = threading.Thread(target=socketServer.printBruh())
+    testThread.start()
     
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])

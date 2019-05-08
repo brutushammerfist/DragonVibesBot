@@ -201,7 +201,7 @@ if __name__ == '__main__':
     socketThread = threading.Thread(target=socketMain)
     socketThread.start()
     
-    temp = socketThread.local()
+    temp = threading.local()
     temp.printBruh()
     
     server.set_auth('DracoAsier', secrets['dracoWebPass'])

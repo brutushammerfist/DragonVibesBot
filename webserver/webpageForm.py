@@ -183,6 +183,9 @@ class SimpleEcho(WebSocket):
         
     def handleClose(self):
         print(self.address, 'closed')
+        
+    def printBruh(self):
+        print("Bruh")
 
 if __name__ == '__main__':
     server = CustomHTTPServer(('0.0.0.0', 8080))
@@ -197,6 +200,9 @@ if __name__ == '__main__':
     
     socketThread = threading.Thread(target=socketMain)
     socketThread.start()
+    
+    temp = socketThread.local()
+    temp.printBruh()
     
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])

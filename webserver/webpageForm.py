@@ -188,7 +188,7 @@ class SimpleEcho(WebSocket):
         print("Bruh")
 
 if __name__ == '__main__':
-    server = CustomHTTPServer(('0.0.0.0', 80))
+    server = CustomHTTPServer(('0.0.0.0', 8080))
     
     secretsFile = open("secrets.json", "r")
     secrets = json.load(secretsFile)
@@ -198,17 +198,17 @@ if __name__ == '__main__':
         socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
         socketServer.serveforever()"""
     
-    socketServer = SimpleWebSocketServer('0.0.0.0', 8080, SimpleEcho)
+    socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
     
     socketThread = threading.Thread(target=socketServer.serveforever())
     socketThread.start()
-    """
+    
     testThread = threading.Thread(target=socketServer.printBruh())
-    testThread.start()"""
+    testThread.start()
     
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
     #server.serve_forever()
-    """
+    
     serverThread = threading.Thread(target=server.serve_forever())
-    serverThread.start()"""
+    serverThread.start()

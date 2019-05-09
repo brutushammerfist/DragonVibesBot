@@ -187,6 +187,8 @@ class SimpleEcho(WebSocket):
         
     def printBruh(self):
         print("Bruh")
+        
+socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
 
 if __name__ == '__main__':
     server = CustomHTTPServer(('0.0.0.0', 8080))
@@ -198,8 +200,6 @@ if __name__ == '__main__':
     """def socketMain():
         socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
         socketServer.serveforever()"""
-    
-    socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
     
     socketThread = threading.Thread(target=socketServer.serveforever)
     socketThread.start()

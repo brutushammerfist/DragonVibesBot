@@ -186,8 +186,7 @@ class SimpleEcho(WebSocket):
         print(self.address, 'closed')
         
     def printBruh(self):
-        self.data = b"Take me to your leader!"
-        self.sendMessage(self.data)
+        self.sendMessage(b"Take me to your leader!")
         
 socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
 

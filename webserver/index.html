@@ -28,5 +28,7 @@
         webSocket.onmessage = function (event) {
             console.log(event.data)
         }
+        
+        webSocket.send("Hello world!")
     </script>
 </html>

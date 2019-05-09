@@ -177,6 +177,7 @@ class CustomHTTPServer(http.server.HTTPServer):
 class SimpleEcho(WebSocket):
     def handleMessage(self):
         self.sendMessage(self.data)
+        print(self.data)
         
     def handleConnected(self):
         print(self.address, 'connected')

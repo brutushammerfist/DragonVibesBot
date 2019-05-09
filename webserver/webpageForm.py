@@ -204,7 +204,10 @@ if __name__ == '__main__':
     socketThread = threading.Thread(target=socketServer.serveforever)
     socketThread.start()
     
-    testThread = threading.Thread(target=socketServer.websocketclass.printBruh)
+    #testThread = threading.Thread(target=socketServer.websocketclass.printBruh, args=(socketServer.websocketclass, ))
+    #testThread.start()
+    
+    testThread = threading.Thread(target=self.printBruh, args=(socketServer.websocketclass, ))
     testThread.start()
     
     server.set_auth('DracoAsier', secrets['dracoWebPass'])

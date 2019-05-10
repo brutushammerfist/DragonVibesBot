@@ -402,12 +402,9 @@ class Bot(commands.Bot):
             
     @commands.command(name="reaper")
     async def reaperCommand(self, ctx):
-        if self.reapThread == None:
-            self.reapThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "reaper", ))
-            self.reapThread.start()
-        else:
-            self.reapThread.run()
-            
+        self.reapThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "reaper", ))
+        self.reapThread.start()
+        
     @commands.command(name="ghost")
     async def ghostCommand(self, ctx):
         if self.ghostThread == None:

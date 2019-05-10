@@ -7,8 +7,6 @@ import os
 import threading
 import time
 from urllib.parse import urlparse, parse_qs
-from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
-import websockets
 
 """
     Based upon work at https://gist.github.com/dragermrb/108158f5a284b5fba806
@@ -171,32 +169,6 @@ class CustomHTTPServer(http.server.HTTPServer):
 
     def get_auth_key(self):
         return self.key
-        
-"""
-    Based upon work at https://github.com/dpallot/simple-websocket-server
-"""
-clients = []
-
-class SimpleEcho(WebSocket):
-    def handleMessage(self):
-        self.sendMessage(self.data)
-        print(self.data)
-        
-    def handleConnected(self):
-        print(self.address, 'connected')
-        clients.append(self)
-        
-    def handleClose(self):
-        print(self.address, 'closed')
-        clients.remove(self)
-        
-    def printBruh(self):
-        while True:
-            for client in clients:
-                client.sendMessage("Take me to your leader!")
-            time.sleep(15)
-        
-socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
 
 if __name__ == '__main__':
     
@@ -206,22 +178,6 @@ if __name__ == '__main__':
     secrets = json.load(secretsFile)
     secretsFile.close()
     
-    """def socketMain():
-        socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
-        socketServer.serveforever()"""
-    
-    socketThread = threading.Thread(target=socketServer.serveforever)
-    socketThread.start()
-    
-    #testThread = threading.Thread(target=socketServer.websocketclass.printBruh, args=(socketServer.websocketclass, ))
-    #testThread.start()
-    
-    testThread = threading.Thread(target=SimpleEcho.printBruh, args=(socketServer.websocketclass, ))
-    testThread.start()
-    
     server.set_auth('DracoAsier', secrets['dracoWebPass'])
     server.set_auth('BrutusHammerfist', secrets['brutWebPass'])
-    #server.serve_forever()
-    
-    serverThread = threading.Thread(target=server.serve_forever())
-    serverThread.start()
+    server.serve_forever()

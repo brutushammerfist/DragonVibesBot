@@ -23,19 +23,15 @@
         </form>
     </body>
     <script type="text/javascript">
-        webSocket = new WebSocket('ws://70.161.83.122:8765')
-        var audio = new Audio('http://70.161.83.122:8080/bell.mp3');
+        webSocket = new WebSocket('ws://70.161.83.122:8765');
+        var bell = new Audio('http://70.161.83.122:8080/bell.mp3');
         
         webSocket.onmessage = function (event) {
             console.log(event.data);
-            var promise = audio.play();
-            if (promise !== null){
-                promise.catch(() => { audio.play(); })
-            }
-            
-        }
+            bell.play();
+        };
         webSocket.opopen = function (event) {
-            webSocket.send("Hello world!")
-        }
+            console.log("Hello world!");
+        };
     </script>
 </html>

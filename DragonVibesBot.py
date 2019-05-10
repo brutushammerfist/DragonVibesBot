@@ -12,6 +12,7 @@ from discord_webhook import DiscordWebhook
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 from webhookHandler import SimpleHTTPRequestHandler
+from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 import threading
 
 secretsFile = open("secrets.json", "r")
@@ -41,6 +42,24 @@ locHost = secrets['local_host']
 extHost = secrets['external_host']
 Port = secrets['port']
 
+clients = []
+
+class soundsServer(WebSocket):
+    def handleMessage(self):
+        pass
+    
+    def handleConnected(self):
+        print(self.address, 'connected')
+        clients.append(self)
+        
+    def handleClose(self):
+        print(self.address, 'closed')
+        clients.remove(self)
+        
+    def sendSound(self, soundType):
+        for client in clients:
+            client.sendMessage(soundType)
+
 class Bot(commands.Bot):
     
     commandSched = AsyncIOScheduler()
@@ -53,6 +72,16 @@ class Bot(commands.Bot):
     
     modList = ["dracoasier", "brutushammerfist"]
     blackList = []
+    
+    socketServer = SimpleWebSocketServer('0.0.0.0', 8765, soundsServer)
+    socketThread = threading.Thread(target=socketServer.serveforever)
+    socketThread.start()
+    
+    reapThread = None
+    ghostThread = None
+    seaThread = None
+    teleporterThread = None
+    roarThread = None
 
     def __init__(self):
         super().__init__(irc_token=twitchIRCToken, client_id=twitchClientID, nick='DragonVibesBot', prefix='!',
@@ -370,6 +399,46 @@ class Bot(commands.Bot):
                 print("Command scheduled!")
             
             print(self.commandSched.get_jobs())
+            
+    @commands.command(name="reaper")
+    async def reaperCommand(self, ctx):
+        if self.reapThread == None:
+            self.reapThread = threading.Thread(target=soundsServer.sendSound, args=(socketServer.websocketclass, "reaper", ))
+            self.reapThread.start()
+        else:
+            self.reapThread.run()
+            
+    @commands.command(name="ghost")
+    async def ghostCommand(self, ctx):
+        if self.ghostThread == None:
+            self.ghostThread = threading.Thread(target=soundsServer.sendSound, args=(socketServer.websocketclass, "ghost", ))
+            self.ghostThread.start()
+        else:
+            self.ghostThread.run()
+            
+    @commands.command(name="sea")
+    async def seaCommand(self, ctx):
+        if self.seaThread == None:
+            self.seaThread = threading.Thread(target=soundsServer.sendSound, args=(socketServer.websocketclass, "sea", ))
+            self.seaThread.start()
+        else:
+            self.seaThread.run()
+            
+    @commands.command(name="teleporter")
+    async def teleporterCommand(self, ctx):
+        if self.teleporterThread == None:
+            self.teleporterThread = threading.Thread(target=soundsServer.sendSound, args=(socketServer.websocketclass, "teleporter", ))
+            self.teleporterThread.start()
+        else:
+            self.teleporterThread.run()
+            
+    @commands.command(name="roar")
+    async def roarCommand(self, ctx):
+        if self.roarThread == None:
+            self.roarThread = threading.Thread(target=soundsServer.sendSound, args=(socketServer.websocketclass, "roar", ))
+            self.roarThread.start()
+        else:
+            self.roarThread.run()
     
 bot = Bot()
 bot.run()

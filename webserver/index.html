@@ -29,12 +29,8 @@
         webSocket.onmessage = function (event) {
             console.log(event.data);
             var promise = audio.play();
-            if (promise != undefined) {
-                promise.then(_ => {
-                    // Autoplay started!
-                }).catch(error => {
-                    // Autoplay prevented! 
-                });
+            if (promise !== null){
+                promise.catch(() => { audio.play(); })
             }
             
         }

@@ -28,7 +28,10 @@
         
         webSocket.onmessage = function (event) {
             console.log(event.data);
-            bell.play();
+            var bellPromise = bell.play();
+            if (bellPromise !== null){
+                bellPromise.catch(() = > { bell.play(); })
+            }
         };
         webSocket.opopen = function (event) {
             console.log("Hello world!");

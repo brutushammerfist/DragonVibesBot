@@ -27,8 +27,15 @@
         var audio = new Audio('http://70.161.83.122:8080/bell.mp3');
         
         webSocket.onmessage = function (event) {
-            console.log(event.data)
-            audio.play()
+            console.log(event.data);
+            var promise = audio.play();
+            if (promise != undefined) {
+                promise.then(_ => {
+                    // Autoplay started!
+                }).catch(error => {
+                    // Autoplay prevented! 
+                });
+            }
             
         }
         webSocket.opopen = function (event) {

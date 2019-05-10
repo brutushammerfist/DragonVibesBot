@@ -30,7 +30,7 @@
             console.log(event.data);
             var bellPromise = bell.play();
             if (bellPromise !== null){
-                bellPromise.catch(() = > { bell.play(); })
+                bellPromise.catch(() => { bell.play(); })
             }
         };
         webSocket.opopen = function (event) {

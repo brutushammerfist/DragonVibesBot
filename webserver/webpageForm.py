@@ -7,6 +7,7 @@ import os
 import threading
 from urllib.parse import urlparse, parse_qs
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
+import websockets
 
 """
     Based upon work at https://gist.github.com/dragermrb/108158f5a284b5fba806
@@ -173,6 +174,7 @@ class CustomHTTPServer(http.server.HTTPServer):
 """
     Based upon work at https://github.com/dpallot/simple-websocket-server
 """
+clients = []
 
 class SimpleEcho(WebSocket):
     def handleMessage(self):
@@ -181,16 +183,20 @@ class SimpleEcho(WebSocket):
         
     def handleConnected(self):
         print(self.address, 'connected')
+        clients.append(self)
         
     def handleClose(self):
         print(self.address, 'closed')
+        clients.remove(self)
         
     def printBruh(self):
-        self.sendMessage(b"Take me to your leader!")
+        for client in clients:
+            self.sendMessage(b"Take me to your leader!")
         
 socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
 
 if __name__ == '__main__':
+    
     server = CustomHTTPServer(('0.0.0.0', 8080))
     
     secretsFile = open("secrets.json", "r")

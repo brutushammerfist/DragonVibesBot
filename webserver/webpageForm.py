@@ -5,6 +5,7 @@ import json
 import asyncio
 import os
 import threading
+import time
 from urllib.parse import urlparse, parse_qs
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 import websockets
@@ -190,8 +191,10 @@ class SimpleEcho(WebSocket):
         clients.remove(self)
         
     def printBruh(self):
-        for client in clients:
-            self.sendMessage(b"Take me to your leader!")
+        while True:
+            for client in clients:
+                self.sendMessage(b"Take me to your leader!")
+            time.sleep(1)
         
 socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
 

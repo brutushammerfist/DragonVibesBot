@@ -194,7 +194,7 @@ class SimpleEcho(WebSocket):
         while True:
             for client in clients:
                 client.sendMessage("Take me to your leader!")
-            time.sleep(1)
+            time.sleep(15)
         
 socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)
 

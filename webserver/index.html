@@ -24,9 +24,12 @@
     </body>
     <script type="text/javascript">
         webSocket = new WebSocket('ws://70.161.83.122:8765')
+        var audio = new Audio('bell.mp3');
         
         webSocket.onmessage = function (event) {
             console.log(event.data)
+            audio.play()
+            
         }
         webSocket.opopen = function (event) {
             webSocket.send("Hello world!")

@@ -193,7 +193,7 @@ class SimpleEcho(WebSocket):
     def printBruh(self):
         while True:
             for client in clients:
-                client.sendMessage(b"Take me to your leader!")
+                client.sendMessage("Take me to your leader!")
             time.sleep(1)
         
 socketServer = SimpleWebSocketServer('0.0.0.0', 8765, SimpleEcho)

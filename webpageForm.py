@@ -139,7 +139,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
         if os.path.isfile("/tmp/dragonvibesbot.pid"):
                 with open("/tmp/dragonvibesbot.pid", 'r') as tmpFile:
                     pid = tmpFile.read()
-                    os.kill(int(pid), signal.SIGTERM)
+                    os.kill(int(pid), signal.SIGKILL)
                     self.wfile.write(bytes("Bot Stopped"), 'utf-8')
         else:
             os.system('python3 DragonVibesBot.py &')

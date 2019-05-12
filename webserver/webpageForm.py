@@ -119,8 +119,10 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                     with open("/tmp/dragonvibesbot.pid", 'r') as tmpFile:
                         pid = tmpFile.read()
                         os.kill(int(pid), signal.SIGTERM)
+                        self.wfile.write(bytes("Bot Stopped"), 'utf-8')
                 else:
                     os.system('python3 ../DragonVibesBot.py')
+                    self.wfile.write(bytes("Bot Started"), 'utf-8')
             elif base_path == '/path2':
                 # Do some work
                 pass

@@ -44,6 +44,8 @@ Port = secrets['port']
 
 clients = []
 
+blacklist = ["bruh"]
+
 pid = str(os.getpid())
 pidfile = "/tmp/dragonvibesbot.pid"
 
@@ -57,6 +59,11 @@ class soundsServer(WebSocket):
     def handleConnected(self):
         print(self.address, 'connected')
         clients.append(self)
+        wordsWebSocket = "blacklist "
+        for x in blacklist:
+            wordsWebSocket = wordsWebSocket + f'{x},'
+        wordsWebSocket = wordsWebSocket[:-1]
+        self.sendMessage(wordsWebSocket)
         
     def handleClose(self):
         print(self.address, 'closed')
@@ -77,7 +84,7 @@ class Bot(commands.Bot):
     giveawayActive = False
     
     modList = ["dracoasier", "brutushammerfist"]
-    blackList = []
+    #blackList = []
     
     socketServer = SimpleWebSocketServer('0.0.0.0', 8765, soundsServer)
     socketThread = threading.Thread(target=socketServer.serveforever)
@@ -119,7 +126,7 @@ class Bot(commands.Bot):
     async def event_message(self, message):
         print(message.author.name + " : " + message.content)
         
-        for x in self.blackList:
+        for x in blackList:
             if x in message.content:
                 try:
                     ctx = await self.get_context(message)
@@ -435,7 +442,6 @@ try:
     print("Starting bot!")
     bot = Bot()
     bot.run()
-    print("Bot Started!")
 except:
     pass
 finally:

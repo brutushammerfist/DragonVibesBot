@@ -47,7 +47,7 @@ clients = []
 pid = str(os.getpid())
 pidfile = "/tmp/dragonvibesbot.pid"
 
-with file(pidfile, 'w') as tmpFile:
+with open(pidfile, 'w') as tmpFile:
     tmpFile.write(pid)
 
 class soundsServer(WebSocket):

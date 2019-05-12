@@ -146,6 +146,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(bytes(json.dumps(response), 'utf-8'))
         """
         base_path = urlparse(self.path).path
+        print(base_path)
         if base_path == '/toggleOnOff':
             if os.path.isfile("/tmp/dragonvibesbot.pid"):
                 with open("/tmp/dragonvibesbot.pid", 'r') as tmpFile:

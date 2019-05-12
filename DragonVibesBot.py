@@ -44,6 +44,12 @@ Port = secrets['port']
 
 clients = []
 
+pid = str(os.getpid())
+pidfile = "/tmp/dragonvibesbot.pid"
+
+with file(pidfile, 'w') as tmpFile:
+    tmpFile.write(pid)
+
 class soundsServer(WebSocket):
     def handleMessage(self):
         pass
@@ -407,35 +413,28 @@ class Bot(commands.Bot):
         
     @commands.command(name="ghost")
     async def ghostCommand(self, ctx):
-        if self.ghostThread == None:
-            self.ghostThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "ghost", ))
-            self.ghostThread.start()
-        else:
-            self.ghostThread.run()
+        self.ghostThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "ghost", ))
+        self.ghostThread.start()
             
     @commands.command(name="sea")
     async def seaCommand(self, ctx):
-        if self.seaThread == None:
-            self.seaThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "sea", ))
-            self.seaThread.start()
-        else:
-            self.seaThread.run()
+        self.seaThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "sea", ))
+        self.seaThread.start()
             
     @commands.command(name="teleporter")
     async def teleporterCommand(self, ctx):
-        if self.teleporterThread == None:
-            self.teleporterThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "teleporter", ))
-            self.teleporterThread.start()
-        else:
-            self.teleporterThread.run()
+        self.teleporterThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "teleporter", ))
+        self.teleporterThread.start()
             
     @commands.command(name="roar")
     async def roarCommand(self, ctx):
-        if self.roarThread == None:
-            self.roarThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "roar", ))
-            self.roarThread.start()
-        else:
-            self.roarThread.run()
-    
-bot = Bot()
-bot.run()
+        self.roarThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "roar", ))
+        self.roarThread.start()
+
+try:    
+    bot = Bot()
+    bot.run()
+except:
+    pass
+finally:
+    os.remove("/tmp/dragonvibesbot.pid")

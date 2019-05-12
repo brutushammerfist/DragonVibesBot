@@ -145,7 +145,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
     def _parse_POST(self):
-        ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+        ctype, pdict = cgi.parse_header(self.headers.get('content-type'))
         if ctype == 'multipart/form-data':
             postvars = cgi.parse_multipart(self.rfile, pdict)
         elif ctype == 'application/x-www-form-urlencoded':

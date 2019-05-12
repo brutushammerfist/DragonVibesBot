@@ -136,13 +136,14 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
 
             self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
-        response = {
-            'path': self.path,
-            'get_vars': str(getvars),
-            'get_vars': str(postvars)
-        }
-
-        self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+        if os.path.isfile("/tmp/dragonvibesbot.pid"):
+                with open("/tmp/dragonvibesbot.pid", 'r') as tmpFile:
+                    pid = tmpFile.read()
+                    os.kill(int(pid), signal.SIGTERM)
+                    self.wfile.write(bytes("Bot Stopped"), 'utf-8')
+            else:
+                os.system('python3 ../DragonVibesBot.py')
+                self.wfile.write(bytes("Bot Started"), 'utf-8')
 
     def _parse_POST(self):
         ctype, pdict = cgi.parse_header(self.headers.get('content-type'))

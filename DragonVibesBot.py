@@ -436,8 +436,6 @@ try:
     bot = Bot()
     bot.run()
     print("Bot Started!")
-except (KeyboardInterrupt, SystemExit):
-    os.remove("/tmp/dragonvibesbot.pid")
 except:
     pass
 finally:

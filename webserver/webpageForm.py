@@ -74,7 +74,15 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                     self.end_headers()
                     self.wfile.write(data)
                     file.close()
-            
+            elif base_path == '/toggleOnOff':
+                if os.path.isfile("/tmp/dragonvibesbot.pid"):
+                    with open("/tmp/dragonvibesbot.pid", 'r') as tmpFile:
+                        pid = tmpFile.read()
+                        os.kill(int(pid), signal.SIGTERM)
+                        self.wfile.write(bytes("Bot Stopped"), 'utf-8')
+                else:
+                    os.system('python3 ../DragonVibesBot.py')
+                    self.wfile.write(bytes("Bot Started"), 'utf-8')
         else:
             self.do_AUTHHEAD()
 

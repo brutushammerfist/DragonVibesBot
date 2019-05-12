@@ -126,8 +126,6 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             elif base_path == '/path2':
                 # Do some work
                 pass
-
-            self.wfile.write(bytes(json.dumps(response), 'utf-8'))
         else:
             self.do_AUTHHEAD()
 

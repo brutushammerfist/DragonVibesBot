@@ -142,7 +142,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                     os.kill(int(pid), signal.SIGTERM)
                     self.wfile.write(bytes("Bot Stopped"), 'utf-8')
         else:
-            os.system('python3 DragonVibesBot.py')
+            os.system('python3 DragonVibesBot.py &')
             self.wfile.write(bytes("Bot Started"), 'utf-8')
 
     def _parse_POST(self):

@@ -143,7 +143,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                     os.remove("/tmp/dragonvibesbot.pid")
                     self.wfile.write(bytes("Bot Stopped", 'utf-8'))
         else:
-            os.system('python3 DragonVibesBot.py &')
+            os.system('gnome-terminal -e \'python3 DragonVibesBot.py\'')
             self.wfile.write(bytes("Bot Started", 'utf-8'))
 
     def _parse_POST(self):

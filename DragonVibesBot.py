@@ -432,8 +432,10 @@ class Bot(commands.Bot):
         self.roarThread.start()
 
 try:    
+    print("Starting bot!")
     bot = Bot()
     bot.run()
+    print("Bot Started!")
 except:
     pass
 finally:

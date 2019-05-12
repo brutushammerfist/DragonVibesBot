@@ -4,6 +4,7 @@ import base64
 import json
 import asyncio
 import os
+import signal
 import threading
 import time
 from urllib.parse import urlparse, parse_qs
@@ -113,9 +114,13 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             }
 
             base_path = urlparse(self.path).path
-            if base_path == '/path1':
-                # Do some work
-                pass
+            if base_path == '/toggleOnOff':
+                if os.path.isfile("/tmp/dragonvibesbot.pid"):
+                    with open("/tmp/dragonvibesbot.pid", 'r') as tmpFile:
+                        pid = tmpFile.read()
+                        os.kill(int(pid), signal.SIGTERM)
+                else:
+                    os.system('python3 ../DragonVibesBot.py')
             elif base_path == '/path2':
                 # Do some work
                 pass

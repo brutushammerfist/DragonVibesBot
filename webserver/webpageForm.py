@@ -147,7 +147,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
         """
         base_path = urlparse(self.path).path
         print(base_path)
-        if base_path == '/toggleOnOff.html':
+        if base_path == '/toggleOnOff.php':
             if os.path.isfile("/tmp/dragonvibesbot.pid"):
                 with open("/tmp/dragonvibesbot.pid", 'r') as tmpFile:
                     pid = tmpFile.read()

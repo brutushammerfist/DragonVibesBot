@@ -107,11 +107,18 @@ class soundsServer(WebSocket):
     def handleConnected(self):
         print(self.address, 'connected')
         clients.append(self)
-        wordsWebSocket = "blacklist "
+        payload = "blacklist "
         for x in blacklist:
-            wordsWebSocket = wordsWebSocket + f'{x},'
-        wordsWebSocket = wordsWebSocket[:-1]
-        self.sendMessage(wordsWebSocket)
+            payload = payload + f'{x},'
+        payload = payload[:-1]
+        payload = payload + ";"
+        userCommand = {}
+        with open("commands.json", "r") as userCommandFile:
+            userCommand = json.load(userCommandFile)
+        for x in userCommand:
+            payload = payload + x + ":" + userCommand[x] + "\\"
+        payload = payload[:-1]
+        self.sendMessage(payload)
         
     def handleClose(self):
         print(self.address, 'closed')

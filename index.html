@@ -9,23 +9,69 @@
             if (bellPromise !== null){
                 bellPromise.catch(() => { bell.play(); })
             }*/
-            if(event.data.startsWith("blacklist")) {
-                var words = event.data.slice(10);
-                words = words.split(",");
-                
-                var listDiv = document.getElementById('blacklist');
-                var ul=document.createElement('ul');
-                for (var i = 0; i < words.length; ++i) {
-                    var li = document.createElement('li');
-                    li.innerHTML = words[i];
-                    ul.appendChild(li);
+            var info = event.data.split(";");
+            
+            for(var i = 0; i < info.length; ++i) {
+                if(info[i].startsWith("blacklist")) {
+                    var words = event.data.slice(10);
+                    words = words.split(",");
+                    
+                    var listDiv = document.getElementById('blacklist');
+                    var ul=document.createElement('ul');
+                    for (var j = 0; j < words.length; ++j) {
+                        var li = document.createElement('li');
+                        li.innerHTML = words[i];
+                        ul.appendChild(li);
+                    }
+                    listDiv.appendChild(ul);
+                } else if(info[i].startsWith("commands")) {
+                    var cmds = info[i].split("\\");
+                    
+                    var listDiv2 = document.getElementById('commandsList');
+                    var ul2 = document.createElement('ul');
+                    for (var k = 0; k < cmds.length; ++k) {
+                        var li2 = document.createElement('li');
+                        var currCmd = cmds[k].split(":");
+                        li2.innerHTML = currCmd[0] + " - " + currCmd[1];
+                        ul2.appendChild(li2);
+                    }
+                    listDiv2.appendChild(ul2);
                 }
-                listDiv.appendChild(ul);
             }
         };
+        
         webSocket.opopen = function (event) {
             console.log("Hello world!");
         };
+        
+        function sendCommandsData() {
+            var commandTypeInput = document.getElementById('commandType').value;
+            if(commandTypeInput === "add") {
+                var commandNameInput = document.getElementById('commandName').value;
+                var commandBodyInput = document.getElementById('commandBody').value;
+                
+                var payload = "addcommands " + commandNameInput + ":" + commandBodyInput;
+                
+                webSocket.send(payload);
+            } else {
+                var commandNameInput = document.getElementById('commandName').value;
+                
+                var payload = "delcommands " + commandNameInput;
+                
+                webSocket.send(payload)
+            }
+        }
+        
+        function sendBlacklistData() {
+            var blacklistTypeInput = document.getElementById('blacklistType').value;
+            var words = document.getElementById('blacklistWords').value;
+            if(blacklistTypeInput === "add") {
+                var payload = "addblacklist " + words;
+            } else {
+                var payload = "delblacklist " + words;
+            }
+            webSocket.send(payload);
+        }
     </script>
     <head>
         <title>
@@ -41,41 +87,37 @@
         </form>
         
         <h2>Blacklisted Words</h2>
-        <form method="post">
+        <!--<form method="post">
             Here are the words already currently blacklisted: <br>
             <div id="blacklist"></div>
+            <br>
             Add several words by seperating them by a comma: <br>
             <input type="text" name="blacklistWords"/>
+            <br><br>
             <input type="submit" value="Submit">
-        </form>
+        </form>-->
+        Here are the words already currently blacklisted: <br>
+        <div id="blacklist"></div><br>
+        <input type="radio" name="blacklistType" value="add"> Add <br>
+        <input type="radio" name="blacklistType" value="del"> Delete <br>
+        <br>
+        Add/Delete several words by seperating them by a comma: <br>
+        <input type="text" name="blacklistWords"/>
+        <br><br>
+        <input type="button" value="Update" onClick="sendBlacklistData()">
+
         
         <h2>Commands</h2>
-        <form>
-            
-        </form>
-    </body>
-    <!--
-    <script type="text/javascript">
-        webSocket = new WebSocket('ws://70.161.83.122:8765');
-        var bell = new Audio('http://70.161.83.122:8080/bell.mp3');
+        <input type="radio" name="commandType" value="add"> Add <br>
+        <input type="radio" name="commandType" value="del"> Delete <br>
         
-        webSocket.onmessage = function (event) {
-            console.log(event.data);
-            /*var bellPromise = bell.play();
-            if (bellPromise !== null){
-                bellPromise.catch(() => { bell.play(); })
-            }*/
-            var listDiv = document.getElementById('blacklist')
-            var ul=document.createElement('ul');
-            for (var i = 0; i < data.list.length; ++i) {
-                var li = document.createElement('li');
-                li.innerHTML = ;
-                ul.appendChild(li);
-            }
-            listDiv.appendChild(ul);
-        };
-        webSocket.opopen = function (event) {
-            console.log("Hello world!");
-        };
-    </script>-->
+        <br>
+        Enter the name of the command: <br>
+        <input type="text" name="commandName"> <br><br>
+        
+        Enter what you would like the command to say: <br>
+        <textarea name="commandBody" rows="4" cols="50"></textarea>
+        <br><br>
+        <input type="button" value="Update" onClick="sendCommandsData()">
+    </body>
 </html>

@@ -44,7 +44,13 @@ Port = secrets['port']
 
 clients = []
 
-blacklist = ["bruh"]
+blacklist = []
+
+blacklistFile = open("blacklsit.csv", "r")
+words = blacklistFile.read()
+secretsFile.close()
+
+blacklist = words.split(",")
 
 pid = str(os.getpid())
 pidfile = "/tmp/dragonvibesbot.pid"
@@ -54,7 +60,48 @@ with open(pidfile, 'w') as tmpFile:
 
 class soundsServer(WebSocket):
     def handleMessage(self):
-        pass
+        payload = self.data
+        if payload.startswith("addblacklist"):
+            payload = payload[10:]
+            with open("blacklist.csv", 'a') as blacklistFile:
+                blacklistFile.write(payload)
+        elif payload.startswith("delblacklist"):
+            payload = payload[10:]
+            payload = payload.split(",")
+            with open("blacklist.csv", 'r') as blacklistFile:
+                tempBlacklist = blacklistFile.read()
+            for x in payload:
+                if x in tempBlacklist:
+                    tempBlacklist.remove(x)
+            newBlacklist = ""
+            for x in tempBlacklist:
+                newBlacklist = newBlacklist + x + ","
+            newBlacklist = newBlacklist[:-1]
+            blacklist = newBlacklist
+            with open("blacklist.csv", 'w') as blacklistFile:
+                blacklistFile.write(newBlacklist)
+        elif payload.startswith("addcommands"):
+            payload = payload[12:]
+            userCommand = {}
+            with open("commands.json", "r") as userCommandFile:
+                if os.stat("commands.json").st_size is not 0:
+                    userCommand = json.load(userCommandFile)
+            tempDict = x.split(":")
+            userCommand[tempDict[0]] = tempDict[1]
+            with open("commands.json", "w") as userCommandFile:
+                json.dump(userCommand, userCommandFile)
+        elif payload.startswith("delcommands"):
+            payload = payload[12:]
+            userCommand = {}
+            with open("commands.json", "r") as userCommandFile:
+                if os.stat("commands.json").st_size is not 0:
+                    userCommand = json.load(userCommandFile)
+            if payload in userCommand:
+                userCommand.pop(payload)
+                with open("commands.json", "w") as userCommandFile:
+                    json.dump(userCommand, userCommandFile)
+        else:
+            pass
     
     def handleConnected(self):
         print(self.address, 'connected')
@@ -83,7 +130,7 @@ class Bot(commands.Bot):
     giveawayPrice = 0
     giveawayActive = False
     
-    modList = ["dracoasier", "brutushammerfist"]
+    modList = ["dracoasier"]
     #blackList = []
     
     socketServer = SimpleWebSocketServer('0.0.0.0', 8765, soundsServer)
@@ -125,6 +172,7 @@ class Bot(commands.Bot):
 
     async def event_message(self, message):
         print(message.author.name + " : " + message.content)
+        global blacklist
         
         for x in blackList:
             if x in message.content:

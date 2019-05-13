@@ -46,7 +46,16 @@
         };
         
         function sendCommandsData() {
-            var commandTypeInput = document.getElementById('commandType').value;
+            //var commandTypeInput = document.getElementById('commandType').value;
+            var commandTypeInputs = document.getElementsByName('commandType');
+            
+            for(var i = 0; i < commandTypeInputs.length; i++) {
+                if(commandTypeInputs[i].checked) {
+                    var commandTypeInput = commandTypeInputs[i].value;
+                    break;
+                }
+            }
+            
             if(commandTypeInput === "add") {
                 var commandNameInput = document.getElementById('commandName').value;
                 var commandBodyInput = document.getElementById('commandBody').value;

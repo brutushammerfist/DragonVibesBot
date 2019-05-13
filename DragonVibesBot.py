@@ -397,7 +397,7 @@ class Bot(commands.Bot):
             json.dump(tokenBank, tokenBankFile)
             tokenBankFile.close()
             
-    @commands.command(name="gastart")
+    @commands.command(name="pool")
     async def giveawayStartCommand(self, ctx):
         if ctx.author.name in self.modList:
             params = ctx.content
@@ -405,16 +405,16 @@ class Bot(commands.Bot):
             self.giveawayPrice = params
             self.giveawayActive = True
             
-            await ctx.send(f'A giveaway has begun! The price for entry is {str(self.giveawayPrice)} coins!')
+            await ctx.send(f'A pool has started! The price for entry is {str(self.giveawayPrice)} coins!')
             
-    @commands.command(name="gaend")
+    @commands.command(name="endpool")
     async def giveawayEndCommand(self, ctx):
         if ctx.author.name in self.modList:
             self.giveawayPool.clear()
             self.giveawayPrice = 0
             self.giveawayActive = False
             
-            await ctx.send(f'The giveaway has concluded!')
+            await ctx.send(f'The pool has concluded!')
             
     @commands.command(name="enter")
     async def enterCommand(self, ctx):

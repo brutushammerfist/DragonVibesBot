@@ -46,15 +46,15 @@
         };
         
         function sendCommandsData() {
-            //var commandTypeInput = document.getElementById('commandType').value;
-            var commandTypeInputs = document.getElementsByName('commandType');
+            var commandTypeInput = document.getElementById('commandType').value;
+            /*var commandTypeInputs = document.getElementsByName('commandType');
             
             for(var i = 0; i < commandTypeInputs.length; i++) {
                 if(commandTypeInputs[i].checked) {
                     var commandTypeInput = commandTypeInputs[i].value;
                     break;
                 }
-            }
+            }*/
             
             if(commandTypeInput === "add") {
                 var commandNameInput = document.getElementById('commandName').value;
@@ -62,13 +62,14 @@
                 
                 var payload = "addcommands " + commandNameInput + ":" + commandBodyInput;
                 
+                console.log("Sending payload: " + payload);
                 webSocket.send(payload);
             } else {
                 var commandNameInput = document.getElementById('commandName').value;
                 
                 var payload = "delcommands " + commandNameInput;
                 
-                webSocket.send(payload)
+                webSocket.send(payload);
             }
         }
         
@@ -108,11 +109,11 @@
         </form>-->
         Here are the words already currently blacklisted: <br>
         <div id="blacklist"></div><br>
-        <input type="radio" name="blacklistType" value="add"> Add <br>
-        <input type="radio" name="blacklistType" value="del"> Delete <br>
+        <input type="radio" id="blacklistType" value="add"> Add <br>
+        <input type="radio" id="blacklistType" value="del"> Delete <br>
         <br>
         Add/Delete several words by seperating them by a comma: <br>
-        <input type="text" name="blacklistWords"/>
+        <input type="text" id="blacklistWords"/>
         <br><br>
         <input type="button" value="Update" onClick="sendBlacklistData()">
 
@@ -120,8 +121,8 @@
         <h2>Commands</h2>
         Here are the current commands: <br>
         <div id="commandsList"></div><br>
-        <input type="radio" name="commandType" value="add"> Add <br>
-        <input type="radio" name="commandType" value="del"> Delete <br>
+        <input type="radio" id="commandType" value="add"> Add <br>
+        <input type="radio" id="commandType" value="del"> Delete <br>
         
         <br>
         Enter the name of the command: <br>

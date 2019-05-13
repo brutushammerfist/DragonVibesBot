@@ -402,7 +402,7 @@ class Bot(commands.Bot):
         if ctx.author.name in self.modList:
             params = ctx.content
             params = params[6:]
-            self.giveawayPrice = params
+            self.giveawayPrice = int(params)
             self.giveawayActive = True
             
             await ctx.send(f'A pool has started! The price for entry is {str(self.giveawayPrice)} coins!')

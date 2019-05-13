@@ -46,7 +46,7 @@ clients = []
 
 blacklist = []
 
-blacklistFile = open("blacklsit.csv", "r")
+blacklistFile = open("blacklist.csv", "r")
 words = blacklistFile.read()
 secretsFile.close()
 

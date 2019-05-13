@@ -139,7 +139,7 @@ class Bot(commands.Bot):
     giveawayPrice = 0
     giveawayActive = False
     
-    modList = ["dracoasier"]
+    modList = ["dracoasier", "brutushammerfist"]
     #blackList = []
     
     socketServer = SimpleWebSocketServer('0.0.0.0', 8765, soundsServer)

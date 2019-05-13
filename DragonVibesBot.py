@@ -401,7 +401,7 @@ class Bot(commands.Bot):
     async def giveawayStartCommand(self, ctx):
         if ctx.author.name in self.modList:
             params = ctx.content
-            params = params[9:]
+            params = params[6:]
             self.giveawayPrice = params
             self.giveawayActive = True
             

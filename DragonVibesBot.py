@@ -111,7 +111,7 @@ class soundsServer(WebSocket):
         for x in blacklist:
             payload = payload + f'{x},'
         payload = payload[:-1]
-        payload = payload + ";"
+        payload = payload + ";commands "
         userCommand = {}
         with open("commands.json", "r") as userCommandFile:
             userCommand = json.load(userCommandFile)

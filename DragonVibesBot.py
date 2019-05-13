@@ -60,6 +60,7 @@ with open(pidfile, 'w') as tmpFile:
 
 class soundsServer(WebSocket):
     def handleMessage(self):
+        global blacklist
         payload = self.data
         if payload.startswith("addblacklist"):
             payload = payload[10:]
@@ -174,7 +175,7 @@ class Bot(commands.Bot):
         print(message.author.name + " : " + message.content)
         global blacklist
         
-        for x in blackList:
+        for x in blacklist:
             if x in message.content:
                 try:
                     ctx = await self.get_context(message)
@@ -379,10 +380,10 @@ class Bot(commands.Bot):
             amount = int(params[0])
             name = params[1]
             
-            if x in tokenBank:
-                tokenBank[x] = tokenBank[x] + amount
+            if name in tokenBank:
+                tokenBank[name] = tokenBank[name] + amount
             else:
-                tokenBank[x] = amount
+                tokenBank[name] = amount
                     
             tokenBankFile = open("tokenBank.json", "w")
             json.dump(tokenBank, tokenBankFile)
@@ -430,10 +431,10 @@ class Bot(commands.Bot):
     @commands.command(name="pull")
     async def pullCommand(self, ctx):
         if ctx.author.name in self.modList:
-            upper = len(giveawayPool) - 1
+            upper = len(self.giveawayPool) - 1
             winner = randrange(0, upper)
             
-            await ctx.send(f'The winner is... {giveawayPool[winner]}!!')
+            await ctx.send(f'The winner is... {self.giveawayPool[winner]}!!')
     
     @commands.command(name="comschedule")
     async def scheduleCommand(self, ctx):

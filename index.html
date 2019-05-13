@@ -10,7 +10,7 @@
                 bellPromise.catch(() => { bell.play(); })
             }*/
             var info = event.data.split(";");
-            
+            console.log(info)
             for(var i = 0; i < info.length; ++i) {
                 if(info[i].startsWith("blacklist")) {
                     var words = event.data.slice(10);

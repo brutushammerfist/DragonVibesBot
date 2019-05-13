@@ -24,7 +24,7 @@
                         ul.appendChild(li);
                     }
                     listDiv.appendChild(ul);
-                } else /*if(info[i].startsWith("commands"))*/ {
+                } else if(info[i].startsWith("commands")) {
                     var cmds = info[i].split("\\");
                     
                     var listDiv2 = document.getElementById('commandsList');

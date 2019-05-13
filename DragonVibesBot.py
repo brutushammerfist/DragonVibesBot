@@ -87,7 +87,7 @@ class soundsServer(WebSocket):
             with open("commands.json", "r") as userCommandFile:
                 if os.stat("commands.json").st_size is not 0:
                     userCommand = json.load(userCommandFile)
-            tempDict = x.split(":")
+            tempDict = payload.split(":")
             userCommand[tempDict[0]] = tempDict[1]
             with open("commands.json", "w") as userCommandFile:
                 json.dump(userCommand, userCommandFile)

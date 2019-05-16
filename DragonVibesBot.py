@@ -63,11 +63,11 @@ class soundsServer(WebSocket):
         global blacklist
         payload = self.data
         if payload.startswith("addblacklist"):
-            payload = payload[10:]
+            payload = payload[13:]
             with open("blacklist.csv", 'a') as blacklistFile:
                 blacklistFile.write(payload)
         elif payload.startswith("delblacklist"):
-            payload = payload[10:]
+            payload = payload[13:]
             payload = payload.split(",")
             with open("blacklist.csv", 'r') as blacklistFile:
                 tempBlacklist = blacklistFile.read()

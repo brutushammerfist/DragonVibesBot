@@ -195,6 +195,8 @@ class Bot(commands.Bot):
         print(message.author.name + " : " + message.content)
         global blacklist
         
+        print(blacklist)
+        
         for x in blacklist:
             if x in message.content:
                 try:

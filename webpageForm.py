@@ -33,64 +33,63 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
         query = urlparse(self.path).query
         query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
         
-        if (query_parameters["hub.challenge"]) != None:
+        """if (query_parameters["hub.challenge"]) != None:
             self.send_response(200)
             self.end_headers()
             self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
-        else:
-            ''' Present frontpage with user authentication. '''
-            if self.headers.get('Authorization') == None:
-                self.do_AUTHHEAD()
+        else:"""
+        ''' Present frontpage with user authentication. '''
+        if self.headers.get('Authorization') == None:
+            self.do_AUTHHEAD()
     
-                response = {
-                    'success': False,
-                    'error': 'No auth header received'
-                }
+            response = {
+                'success': False,
+                'error': 'No auth header received'
+            }
     
-                self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+            self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
-            elif self.headers.get('Authorization') == 'Basic ' + str(key):
-                #self.send_response(200)
-                #self.send_header('Content-type', 'text/html')
-                #self.end_headers()
+        elif self.headers.get('Authorization') == 'Basic ' + str(key):
+            #self.send_response(200)
+            #self.send_header('Content-type', 'text/html')
+            #self.end_headers()
     
-                getvars = self._parse_GET()
+            getvars = self._parse_GET()
     
-                base_path = urlparse(self.path).path
-                print(base_path)
-                if base_path == '/':
-                    with open("index.html", "r") as index:
-                        response = index.read()
+            base_path = urlparse(self.path).path
+            print(base_path)
+            if base_path == '/':
+                with open("index.html", "r") as index:
+                    response = index.read()
                     
-                    self.send_response(200)
-                    self.send_header('Content-type', 'text/html')
-                    self.end_headers()
-                    self.wfile.write(bytes(response, 'utf-8'))
-                elif base_path.endswith(".mp3"):
-                    base_path = base_path[1:]
-                    print(base_path)
-                    if os.stat(base_path).st_size is not 0:
-                        file = open(os.curdir + os.sep + base_path, "rb")
-                        #file = open("." + base_path)
-                        length = os.stat(base_path).st_size
-                        data = file.read()
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                self.wfile.write(bytes(response, 'utf-8'))
+            elif base_path.endswith(".mp3"):
+                base_path = base_path[1:]
+                print(base_path)
+                if os.stat(base_path).st_size is not 0:
+                    file = open(os.curdir + os.sep + base_path, "rb")
+                    #file = open("." + base_path)
+                    length = os.stat(base_path).st_size
+                    data = file.read()
                         
-                        self.send_response(200)
-                        self.send_header('Content-type', 'audio/mpeg')
-                        self.send_header('Content-Length', length)
-                        self.end_headers()
-                        self.wfile.write(data)
-                        file.close()
-                
-            else:
-                self.do_AUTHHEAD()
+                    self.send_response(200)
+                    self.send_header('Content-type', 'audio/mpeg')
+                    self.send_header('Content-Length', length)
+                    self.end_headers()
+                    self.wfile.write(data)
+                    file.close()
+            
+        else:
+            self.do_AUTHHEAD()
+            response = {
+                'success': False,
+                'error': 'Invalid credentials'
+            }
     
-                response = {
-                    'success': False,
-                    'error': 'Invalid credentials'
-                }
-    
-                self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+            self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
     def do_POST(self):
         key = self.server.get_auth_key()

@@ -1,12 +1,12 @@
 <html>
     <script type="text/javascript">
         var webSocket = new WebSocket('ws://70.161.83.122:8765');
-        var bell = new Audio('http://70.161.83.122:8080/bell.mp3');
-        var reaper = new Audio('http://70.161.83.122:8080/reaper.mp3');
-        var ghost = new Audio('http://70.161.83.122:8080/ghost.mp3');
-        var sea = new Audio('http://70.161.83.122:8080/sea.mp3');
-        var teleporter = new Audio('http://70.161.83.122:8080/teleporter.mp3');
-        var roar = new Audio('http://70.161.83.122:8080/roar.mp3');
+        var bell = new Audio('http://70.161.83.122:8080/audio/bell.mp3');
+        var reaper = new Audio('http://70.161.83.122:8080/audio/reaper.mp3');
+        var ghost = new Audio('http://70.161.83.122:8080/audio/ghost.mp3');
+        var sea = new Audio('http://70.161.83.122:8080/audio/sea.mp3');
+        var teleporter = new Audio('http://70.161.83.122:8080/audio/teleporter.mp3');
+        var roar = new Audio('http://70.161.83.122:8080/audio/roar.mp3');
         
         webSocket.onmessage = function (event) {
             console.log(event.data);

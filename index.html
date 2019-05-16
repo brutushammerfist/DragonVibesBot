@@ -46,17 +46,17 @@
         };
         
         function sendCommandsData() {
-            var commandTypeInput = document.getElementById('commandType').value;
-            /*var commandTypeInputs = document.getElementsByName('commandType');
+            //var commandTypeInput = document.getElementById('commandType').value;
+            var commandTypeInputs = document.getElementsByName('commandType');
             
             for(var i = 0; i < commandTypeInputs.length; i++) {
                 if(commandTypeInputs[i].checked) {
-                    commandTypeInput = commandTypeInputs[i].value;
+                    var commandTypeInput = commandTypeInputs[i].value;
                     break;
                 }
-            }*/
+            }
             
-            console.log(commandTypeInput)
+            console.log(commandTypeInput);
             
             if(commandTypeInput === "add") {
                 var commandNameInput = document.getElementById('commandName').value;

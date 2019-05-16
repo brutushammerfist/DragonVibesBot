@@ -108,10 +108,11 @@ class soundsServer(WebSocket):
     def handleConnected(self):
         print(self.address, 'connected')
         clients.append(self)
+        """
         with open("blacklist.csv", "r") as blacklistFile:
             blacklist.clear()
             words = blacklistFile.read()
-            blacklist = words.split(",")
+            blacklist = words.split(",")"""
         payload = "blacklist "
         for x in blacklist:
             payload = payload + f'{x},'

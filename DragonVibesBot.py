@@ -70,7 +70,7 @@ class soundsServer(WebSocket):
             payload = payload[13:]
             payload = payload.split(",")
             with open("blacklist.csv", 'r') as blacklistFile:
-                tempBlacklist = blacklistFile.read()
+                tempBlacklist = blacklistFile.read().split(",")
             for x in payload:
                 print("Removing: " + str(x))
                 if x in tempBlacklist:

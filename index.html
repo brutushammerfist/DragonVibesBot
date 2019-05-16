@@ -51,10 +51,12 @@
             
             for(var i = 0; i < commandTypeInputs.length; i++) {
                 if(commandTypeInputs[i].checked) {
-                    var commandTypeInput = commandTypeInputs[i].value;
+                    commandTypeInput = commandTypeInputs[i].value;
                     break;
                 }
             }*/
+            
+            console.log(commandTypeInput)
             
             if(commandTypeInput === "add") {
                 var commandNameInput = document.getElementById('commandName').value;
@@ -64,7 +66,7 @@
                 
                 console.log("Sending payload: " + payload);
                 webSocket.send(payload);
-            } else {
+            } else if(commandTypeInput === "del"){
                 var commandNameInput = document.getElementById('commandName').value;
                 
                 var payload = "delcommands " + commandNameInput;
@@ -78,7 +80,7 @@
             var words = document.getElementById('blacklistWords').value;
             if(blacklistTypeInput === "add") {
                 var payload = "addblacklist " + words;
-            } else {
+            } else if(blacklistTypeInput === "del") {
                 var payload = "delblacklist " + words;
             }
             webSocket.send(payload);

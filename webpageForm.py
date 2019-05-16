@@ -30,17 +30,24 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
         key = self.server.get_auth_key()
-
-        ''' Present frontpage with user authentication. '''
-        if self.headers.get('Authorization') == None:
-            self.do_AUTHHEAD()
-
-            response = {
-                'success': False,
-                'error': 'No auth header received'
-            }
-
-            self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+        query = urlparse(self.path).query
+        query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
+        
+        if (query_parameters["hub.challenge"]) != None:
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
+        else:
+            ''' Present frontpage with user authentication. '''
+            if self.headers.get('Authorization') == None:
+                self.do_AUTHHEAD()
+    
+                response = {
+                    'success': False,
+                    'error': 'No auth header received'
+                }
+    
+                self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
         elif self.headers.get('Authorization') == 'Basic ' + str(key):
             #self.send_response(200)

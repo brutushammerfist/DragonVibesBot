@@ -1,7 +1,7 @@
 <html>
     <script type="text/javascript">
         var webSocket = new WebSocket('ws://70.161.83.122:8765');
-        //var bell = new Audio('http://70.161.83.122:8080/bell.mp3');
+        var bell = new Audio('http://70.161.83.122:8080/bell.mp3');
         var reaper = new Audio('http://70.161.83.122:8080/reaper.mp3');
         var ghost = new Audio('http://70.161.83.122:8080/ghost.mp3');
         var sea = new Audio('http://70.161.83.122:8080/sea.mp3');
@@ -10,10 +10,10 @@
         
         webSocket.onmessage = function (event) {
             console.log(event.data);
-            /*var bellPromise = bell.play();
+            var bellPromise = bell.play();
             if (bellPromise !== null){
                 bellPromise.catch(() => { bell.play(); })
-            }*/
+            }
             var promise;
             
             if(event.data === "reaper"){

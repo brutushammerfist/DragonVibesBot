@@ -2,6 +2,11 @@
     <script type="text/javascript">
         var webSocket = new WebSocket('ws://70.161.83.122:8765');
         //var bell = new Audio('http://70.161.83.122:8080/bell.mp3');
+        var reaper = new Audio('http://70.161.83.122:8080/reaper.wav');
+        var ghost = new Audio('http://70.161.83.122:8080/ghost.wav');
+        var sea = new Audio('http://70.161.83.122:8080/sea.wav');
+        var teleporter = new Audio('http://70.161.83.122:8080/teleporter.wav');
+        var roar = new Audio('http://70.161.83.122:8080/roar.wav');
         
         webSocket.onmessage = function (event) {
             console.log(event.data);
@@ -9,6 +14,35 @@
             if (bellPromise !== null){
                 bellPromise.catch(() => { bell.play(); })
             }*/
+            var promise;
+            
+            if(event.data === "reaper"){
+                promise = reaper.play();
+                if(promise !== null) {
+                    promise.catch(() => { reaper.play(); })
+                }
+            } else if(event.data === "ghost") {
+                promise = ghost.play();
+                if(promise !== null) {
+                    promise.catch(() => { ghost.play(); })
+                }
+            } else if(event.data === "sea") {
+                promise = sea.play();
+                if(promise !== null) {
+                    promise.catch(() => { sea.play(); })
+                }
+            } else if(event.data === "teleporter") {
+                promise = teleporter.play();
+                if(promise !== null) {
+                    promise.catch(() => { teleporter.play(); })
+                }
+            } else if(event.data === "roar") {
+                promise = roar.play();
+                if(promise !== null) {
+                    promise.catch(() => { roar.play(); })
+                }
+            }
+            
             var info = event.data.split(";");
             console.log(info)
             for(var i = 0; i < info.length; ++i) {

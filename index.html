@@ -71,6 +71,7 @@
                 
                 var payload = "delcommands " + commandNameInput;
                 
+                console.log("Sending payload: " + payload);
                 webSocket.send(payload);
             }
         }
@@ -78,11 +79,17 @@
         function sendBlacklistData() {
             var blacklistTypeInput = document.getElementById('blacklistType').value;
             var words = document.getElementById('blacklistWords').value;
+            
+            console.log(blacklistTypeInput);
+            
             if(blacklistTypeInput === "add") {
                 var payload = "addblacklist " + words;
             } else if(blacklistTypeInput === "del") {
                 var payload = "delblacklist " + words;
             }
+            
+            console.log("Sending payload: " + payload);
+            
             webSocket.send(payload);
         }
     </script>
@@ -111,8 +118,8 @@
         </form>-->
         Here are the words already currently blacklisted: <br>
         <div id="blacklist"></div><br>
-        <input type="radio" id="blacklistType" value="add"> Add <br>
-        <input type="radio" id="blacklistType" value="del"> Delete <br>
+        <input type="radio" id="b1" name="blacklistType" value="add"> Add <br>
+        <input type="radio" id="b2" name="blacklistType" value="del"> Delete <br>
         <br>
         Add/Delete several words by seperating them by a comma: <br>
         <input type="text" id="blacklistWords"/>
@@ -123,8 +130,8 @@
         <h2>Commands</h2>
         Here are the current commands: <br>
         <div id="commandsList"></div><br>
-        <input type="radio" id="commandType" value="add"> Add <br>
-        <input type="radio" id="commandType" value="del"> Delete <br>
+        <input type="radio" id="c1" name="commandType" value="add"> Add <br>
+        <input type="radio" id="c2" name="commandType" value="del"> Delete <br>
         
         <br>
         Enter the name of the command: <br>

@@ -147,8 +147,10 @@ class Bot(commands.Bot):
     giveawayPrice = 0
     giveawayActive = False
     
+    pool = []
+    poolActive = False
+    
     modList = ["dracoasier", "brutushammerfist"]
-    #blackList = []
     
     socketServer = SimpleWebSocketServer('0.0.0.0', 8765, soundsServer)
     socketThread = threading.Thread(target=socketServer.serveforever)
@@ -405,7 +407,7 @@ class Bot(commands.Bot):
             json.dump(tokenBank, tokenBankFile)
             tokenBankFile.close()
             
-    @commands.command(name="pool")
+    @commands.command(name="gastart")
     async def giveawayStartCommand(self, ctx):
         if ctx.author.name in self.modList:
             params = ctx.content
@@ -413,16 +415,16 @@ class Bot(commands.Bot):
             self.giveawayPrice = int(params)
             self.giveawayActive = True
             
-            await ctx.send(f'A pool has started! The price for entry is {str(self.giveawayPrice)} coins!')
+            await ctx.send(f'A giveaway has started! The price for entry is {str(self.giveawayPrice)} coins!')
             
-    @commands.command(name="endpool")
+    @commands.command(name="gaend")
     async def giveawayEndCommand(self, ctx):
         if ctx.author.name in self.modList:
             self.giveawayPool.clear()
             self.giveawayPrice = 0
             self.giveawayActive = False
             
-            await ctx.send(f'The pool has concluded!')
+            await ctx.send(f'The giveaway has concluded!')
             
     @commands.command(name="enter")
     async def enterCommand(self, ctx):
@@ -444,13 +446,44 @@ class Bot(commands.Bot):
             json.dump(tokenBank, tokenBankFile)
             tokenBankFile.close()
         
-    @commands.command(name="pull")
-    async def pullCommand(self, ctx):
+    @commands.command(name="gapull")
+    async def giveawayPullCommand(self, ctx):
         if ctx.author.name in self.modList:
             upper = len(self.giveawayPool) - 1
             winner = randrange(0, upper)
             
             await ctx.send(f'The winner is... {self.giveawayPool[winner]}!!')
+            
+    @commands.command(name="poolstart")
+    async def poolStartCommand(self, ctx):
+        if ctx.author.name in self.modList:
+            self.poolActive = True
+            
+            await ctx.send(f'A pool has been created! Everyone take a dip!')
+            
+    @commands.command(name="poolend")
+    async def poolEndCommand(self, ctx):
+        if ctx.author.name in self.modList:
+            self.pool.clear()
+            self.poolActive = False
+            
+            await ctx.send(f'The pool has dried up!')
+            
+    @commands.command(name="dive")
+    async def poolEnterCommand(self, ctx):
+        if self.poolActive is True:
+            if ctx.author.name in self.pool:
+                pass
+            else:
+                self.pool.append(ctx.author.name)
+            
+    @commands.command(name="pull")
+    async def poolPullCommand(self, ctx):
+        if ctx.author.name in self.modList:
+            upper = len(self.giveawayPool) - 1
+            winner = randrange(0, upper)
+            
+            await ctx.send(f'The winner is... {self.pool[winner]}!!')
     
     @commands.command(name="comschedule")
     async def scheduleCommand(self, ctx):

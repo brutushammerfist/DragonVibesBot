@@ -79,7 +79,9 @@ class soundsServer(WebSocket):
             for x in tempBlacklist:
                 newBlacklist = newBlacklist + x + ","
             newBlacklist = newBlacklist[:-1]
-            blacklist = newBlacklist
+            blacklist.clear()
+            blacklist = newBlacklist.split(",")
+            print(blacklist)
             with open("blacklist.csv", 'w') as blacklistFile:
                 blacklistFile.write(newBlacklist)
         elif payload.startswith("addcommands"):

@@ -80,7 +80,6 @@
         };
         
         function sendCommandsData() {
-            //var commandTypeInput = document.getElementById('commandType').value;
             var commandTypeInputs = document.getElementsByName('commandType');
             
             for(var i = 0; i < commandTypeInputs.length; i++) {
@@ -148,15 +147,6 @@
         </form>
         
         <h2>Blacklisted Words</h2>
-        <!--<form method="post">
-            Here are the words already currently blacklisted: <br>
-            <div id="blacklist"></div>
-            <br>
-            Add several words by seperating them by a comma: <br>
-            <input type="text" name="blacklistWords"/>
-            <br><br>
-            <input type="submit" value="Submit">
-        </form>-->
         Here are the words already currently blacklisted: <br>
         <div id="blacklist"></div><br>
         <input type="radio" id="b1" name="blacklistType" value="add"> Add <br>

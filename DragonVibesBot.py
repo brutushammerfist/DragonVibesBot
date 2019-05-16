@@ -46,9 +46,9 @@ clients = []
 
 blacklist = []
 
-blacklistFile = open("blacklist.csv", "r")
-words = blacklistFile.read()
-secretsFile.close()
+if os.stat("blacklist.csv").st_size is not 0:
+    with open("blacklist.csv", "r") as blacklistFile:
+        words = blacklistFile.read()
 
 blacklist = words.split(",")
 
@@ -69,8 +69,9 @@ class soundsServer(WebSocket):
         elif payload.startswith("delblacklist"):
             payload = payload[13:]
             payload = payload.split(",")
-            with open("blacklist.csv", 'r') as blacklistFile:
-                tempBlacklist = blacklistFile.read().split(",")
+            if os.stat("blacklist.csv", "r").st_size is not 0:
+                with open("blacklist.csv", 'r') as blacklistFile:
+                    tempBlacklist = blacklistFile.read().split(",")
             for x in payload:
                 print("Removing: " + str(x))
                 if x in tempBlacklist:

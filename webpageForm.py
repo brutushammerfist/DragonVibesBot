@@ -49,48 +49,48 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
     
                 self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
-        elif self.headers.get('Authorization') == 'Basic ' + str(key):
-            #self.send_response(200)
-            #self.send_header('Content-type', 'text/html')
-            #self.end_headers()
-
-            getvars = self._parse_GET()
-
-            base_path = urlparse(self.path).path
-            print(base_path)
-            if base_path == '/':
-                with open("index.html", "r") as index:
-                    response = index.read()
-                
-                self.send_response(200)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
-                self.wfile.write(bytes(response, 'utf-8'))
-            elif base_path.endswith(".mp3"):
-                base_path = base_path[1:]
+            elif self.headers.get('Authorization') == 'Basic ' + str(key):
+                #self.send_response(200)
+                #self.send_header('Content-type', 'text/html')
+                #self.end_headers()
+    
+                getvars = self._parse_GET()
+    
+                base_path = urlparse(self.path).path
                 print(base_path)
-                if os.stat(base_path).st_size is not 0:
-                    file = open(os.curdir + os.sep + base_path, "rb")
-                    #file = open("." + base_path)
-                    length = os.stat(base_path).st_size
-                    data = file.read()
+                if base_path == '/':
+                    with open("index.html", "r") as index:
+                        response = index.read()
                     
                     self.send_response(200)
-                    self.send_header('Content-type', 'audio/mpeg')
-                    self.send_header('Content-Length', length)
+                    self.send_header('Content-type', 'text/html')
                     self.end_headers()
-                    self.wfile.write(data)
-                    file.close()
-            
-        else:
-            self.do_AUTHHEAD()
-
-            response = {
-                'success': False,
-                'error': 'Invalid credentials'
-            }
-
-            self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+                    self.wfile.write(bytes(response, 'utf-8'))
+                elif base_path.endswith(".mp3"):
+                    base_path = base_path[1:]
+                    print(base_path)
+                    if os.stat(base_path).st_size is not 0:
+                        file = open(os.curdir + os.sep + base_path, "rb")
+                        #file = open("." + base_path)
+                        length = os.stat(base_path).st_size
+                        data = file.read()
+                        
+                        self.send_response(200)
+                        self.send_header('Content-type', 'audio/mpeg')
+                        self.send_header('Content-Length', length)
+                        self.end_headers()
+                        self.wfile.write(data)
+                        file.close()
+                
+            else:
+                self.do_AUTHHEAD()
+    
+                response = {
+                    'success': False,
+                    'error': 'Invalid credentials'
+                }
+    
+                self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
     def do_POST(self):
         key = self.server.get_auth_key()

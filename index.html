@@ -77,8 +77,15 @@
         }
         
         function sendBlacklistData() {
-            var blacklistTypeInput = document.getElementById('blacklistType').value;
+            var blacklistTypeInputs = document.getElementsByName('blacklistType').value;
             var words = document.getElementById('blacklistWords').value;
+            
+            for(var i = 0; i < blacklistTypeInputs.length; i++) {
+                if(blacklistTypeInputs[i].checked) {
+                    var blacklistTypeInput = blacklistTypeInputs[i].value;
+                    break;
+                }
+            }
             
             console.log(blacklistTypeInput);
             

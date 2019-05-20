@@ -46,7 +46,8 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
-        else:    
+        else:
+            print("Entering else!")
             if self.headers.get('Authorization') == None:
                 self.do_AUTHHEAD()
         

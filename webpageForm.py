@@ -54,7 +54,9 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             #self.send_header('Content-type', 'text/html')
             #self.end_headers()
             
-            query = urlparse(self.path).query
+            query = urlparse(self.path).path
+            query = query[1:]
+            print(query)
             query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
             
             print(query_parameters)

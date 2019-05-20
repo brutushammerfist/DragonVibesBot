@@ -430,7 +430,7 @@ class Bot(commands.Bot):
             
             await ctx.send(f'The giveaway has concluded!')
             
-    @commands.command(name="enter")
+    @commands.command(name="gaenter")
     async def enterCommand(self, ctx):
         tokenBank = {}
         tokenBankFile = open("tokenBank.json", "r")
@@ -462,6 +462,7 @@ class Bot(commands.Bot):
     async def poolStartCommand(self, ctx):
         if ctx.author.name in self.modList:
             self.poolActive = True
+            print("Pool party starting!")
             
             await ctx.send(f'A pool has been created! Everyone take a dip!')
             
@@ -470,22 +471,26 @@ class Bot(commands.Bot):
         if ctx.author.name in self.modList:
             self.pool.clear()
             self.poolActive = False
+            print("Pool party over!")
             
             await ctx.send(f'The pool has dried up!')
             
-    @commands.command(name="dive")
+    @commands.command(name="enter")
     async def poolEnterCommand(self, ctx):
         if self.poolActive is True:
             if ctx.author.name in self.pool:
-                pass
+                print("Name already in pool!")
             else:
+                print(f'Adding {ctx.author.name} to pool!')
                 self.pool.append(ctx.author.name)
             
     @commands.command(name="pull")
     async def poolPullCommand(self, ctx):
         if ctx.author.name in self.modList:
-            upper = len(self.giveawayPool) - 1
+            print("Picking winner...")
+            upper = len(self.pool) - 1
             winner = randrange(0, upper)
+            print(f'Winner is: {self.pool[winner]}')
             
             await ctx.send(f'The winner is... {self.pool[winner]}!!')
     

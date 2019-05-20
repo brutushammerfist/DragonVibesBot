@@ -59,7 +59,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             print(query)
             query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
             
-            print(query_parameters)
+            #print(query_parameters)
             
             if "hub.challenge" in query_parameters:
                     print(f'Hub Challenge: {query_parameters["hub.challenge"]}')

@@ -41,71 +41,77 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
         else:"""
         ''' Present frontpage with user authentication. '''
-        if self.headers.get('Authorization') == None:
-            self.do_AUTHHEAD()
-    
-            response = {
-                'success': False,
-                'error': 'No auth header received'
-            }
-    
-            self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+        if "hub.challenge" in query_parameters:
+            print(f'Hub Challenge: {query_parameters["hub.challenge"]}')
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
+        else:    
+            if self.headers.get('Authorization') == None:
+                self.do_AUTHHEAD()
+        
+                response = {
+                    'success': False,
+                    'error': 'No auth header received'
+                }
+        
+                self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
-        elif self.headers.get('Authorization') == 'Basic ' + str(key):
-            #self.send_response(200)
-            #self.send_header('Content-type', 'text/html')
-            #self.end_headers()
-            
-            query = urlparse(self.path).path
-            query = query[1:]
-            print(query)
-            query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
-            
-            #print(query_parameters)
-            
-            if "hub.challenge" in query_parameters:
-                    print(f'Hub Challenge: {query_parameters["hub.challenge"]}')
-                    self.send_response(200)
-                    self.end_headers()
-                    self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
-                    return
-            
-            #getvars = self._parse_GET()
-    
-            base_path = urlparse(self.path).path
-            print(base_path)
-            if base_path == '/':
-                with open("index.html", "r") as index:
-                    response = index.read()
-                    
-                self.send_response(200)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
-                self.wfile.write(bytes(response, 'utf-8'))
-            elif base_path.endswith(".mp3"):
-                base_path = base_path[1:]
+            elif self.headers.get('Authorization') == 'Basic ' + str(key):
+                #self.send_response(200)
+                #self.send_header('Content-type', 'text/html')
+                #self.end_headers()
+                
+                query = urlparse(self.path).path
+                query = query[1:]
+                print(query)
+                query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
+                
+                #print(query_parameters)
+                
+                if "hub.challenge" in query_parameters:
+                        print(f'Hub Challenge: {query_parameters["hub.challenge"]}')
+                        self.send_response(200)
+                        self.end_headers()
+                        self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
+                        return
+                
+                #getvars = self._parse_GET()
+        
+                base_path = urlparse(self.path).path
                 print(base_path)
-                if os.stat(base_path).st_size is not 0:
-                    file = open(os.curdir + os.sep + base_path, "rb")
-                    #file = open("." + base_path)
-                    length = os.stat(base_path).st_size
-                    data = file.read()
+                if base_path == '/':
+                    with open("index.html", "r") as index:
+                        response = index.read()
                         
                     self.send_response(200)
-                    self.send_header('Content-type', 'audio/mpeg')
-                    self.send_header('Content-Length', length)
+                    self.send_header('Content-type', 'text/html')
                     self.end_headers()
-                    self.wfile.write(data)
-                    file.close()
-            
-        else:
-            self.do_AUTHHEAD()
-            response = {
-                'success': False,
-                'error': 'Invalid credentials'
-            }
-    
-            self.wfile.write(bytes(json.dumps(response), 'utf-8'))
+                    self.wfile.write(bytes(response, 'utf-8'))
+                elif base_path.endswith(".mp3"):
+                    base_path = base_path[1:]
+                    print(base_path)
+                    if os.stat(base_path).st_size is not 0:
+                        file = open(os.curdir + os.sep + base_path, "rb")
+                        #file = open("." + base_path)
+                        length = os.stat(base_path).st_size
+                        data = file.read()
+                            
+                        self.send_response(200)
+                        self.send_header('Content-type', 'audio/mpeg')
+                        self.send_header('Content-Length', length)
+                        self.end_headers()
+                        self.wfile.write(data)
+                        file.close()
+                
+            else:
+                self.do_AUTHHEAD()
+                response = {
+                    'success': False,
+                    'error': 'Invalid credentials'
+                }
+        
+                self.wfile.write(bytes(json.dumps(response), 'utf-8'))
 
     def do_POST(self):
         key = self.server.get_auth_key()

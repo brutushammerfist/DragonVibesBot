@@ -132,6 +132,18 @@
             
             webSocket.send(payload);
         }
+        
+        function toggleBot() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.location.reload(true);
+                }
+            };
+            xhttp.open("POST", "70.161.83.122:8080/toggleOnOff", true);
+            xhttp.send();
+        }
+        
         /*
         function webSockStatus() {
             if(webSocket.readyState === webSocket.CLOSED){
@@ -141,8 +153,12 @@
         
         setInterval(webSockStatus, 5);
         */
+        
+        
+        
     </script>
     <head>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <title>
             DragonVibesBot Controls
         </title>
@@ -152,7 +168,7 @@
         
         <h2>On/Off</h2>
         <label class="switch">
-            <input type="checkbox"/>
+            <input type="checkbox" id="onoff" onclick="toggleBot()"/>
             <span class="slider round"></span>
         </label>
         <form method="post" target="/toggleOnOff">

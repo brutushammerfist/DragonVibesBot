@@ -33,6 +33,8 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
         query = urlparse(self.path).query
         query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
         
+        print(query_parameters)
+        
         """if (query_parameters["hub.challenge"]) != None:
             self.send_response(200)
             self.end_headers()

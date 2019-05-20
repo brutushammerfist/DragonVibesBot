@@ -58,6 +58,7 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
             
             if "hub.challenge" in query_parameters:
+                    print(f'Hub Challenge: {query_parameters["hub.challenge"]}')
                     self.send_response(200)
                     self.end_headers()
                     self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))

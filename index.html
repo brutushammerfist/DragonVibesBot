@@ -132,6 +132,14 @@
             
             webSocket.send(payload);
         }
+        
+        function webSockStatus() {
+            if(webSocket.readyState === webSocket.CLOSED){
+                webSocket = new WebSocket('ws://70.161.83.122:8765');
+        }
+        
+        setInterval(webSockStatus, 5);
+        
     </script>
     <head>
         <title>

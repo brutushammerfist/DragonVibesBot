@@ -43,11 +43,6 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
         
             key = self.server.get_auth_key()
             
-            """if (query_parameters["hub.challenge"]) != None:
-                self.send_response(200)
-                self.end_headers()
-                self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
-            else:"""
             ''' Present frontpage with user authentication. '''
             print("Entering else!")
             if self.headers.get('Authorization') == None:

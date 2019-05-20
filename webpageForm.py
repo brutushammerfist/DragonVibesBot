@@ -53,8 +53,20 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             #self.send_response(200)
             #self.send_header('Content-type', 'text/html')
             #self.end_headers()
-    
-            getvars = self._parse_GET()
+            
+            query = urlparse(self.path).query
+            query_parameters = dict(qc.split("=") for qc in query.split("&") if "=" in qc)
+            
+            if (query_parameters["hub.challenge"]) != None:
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
+            else :
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(("OK").encode("UTF-8"))
+            
+            #getvars = self._parse_GET()
     
             base_path = urlparse(self.path).path
             print(base_path)

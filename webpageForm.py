@@ -39,8 +39,6 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
-        elif :
-        
         else:
             key = self.server.get_auth_key()
             

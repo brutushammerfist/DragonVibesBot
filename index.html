@@ -38,36 +38,8 @@
                 }
             }
             
-            var info = event.data.split(";");
-            console.log(info);
-            for(var i = 0; i < info.length; ++i) {
-                if(info[i].startsWith("blacklist")) {
-                    var words = info[i].slice(10);
-                    words = words.split(",");
-                    
-                    var listDiv = document.getElementById('blacklist');
-                    var ul=document.createElement('ul');
-                    for (var j = 0; j < words.length; ++j) {
-                        var li = document.createElement('li');
-                        li.innerHTML = words[j];
-                        ul.appendChild(li);
-                    }
-                    listDiv.appendChild(ul);
-                } else if(info[i].startsWith("commands")) {
-                    var cmds = info[i].split("\\");
-                    cmds[0] = cmds[0].slice(9);
-                    
-                    var listDiv2 = document.getElementById('commandsList');
-                    var ul2 = document.createElement('ul');
-                    for (var k = 0; k < cmds.length; ++k) {
-                        var li2 = document.createElement('li');
-                        var currCmd = cmds[k].split(":");
-                        li2.innerHTML = currCmd[0] + " - " + currCmd[1];
-                        ul2.appendChild(li2);
-                    }
-                    listDiv2.appendChild(ul2);
-                }
-            }
+            document.getElementByName("blacklist").contentWindow.location.reload();
+            document.getElementByName("commandsList").contentWindow.location.reload();
         };
         
         webSocket.opopen = function (event) {
@@ -102,6 +74,9 @@
                 console.log("Sending payload: " + payload);
                 webSocket.send(payload);
             }
+            
+            document.getElementByName("blacklist").contentWindow.location.reload();
+            document.getElementByName("commandsList").contentWindow.location.reload();
         }
         
         function sendBlacklistData() {
@@ -126,6 +101,9 @@
             console.log("Sending payload: " + payload);
             
             webSocket.send(payload);
+            
+            document.getElementByName("blacklist").contentWindow.location.reload();
+            document.getElementByName("commandsList").contentWindow.location.reload();
         }
         
         function toggleBot() {
@@ -137,6 +115,9 @@
             };
             xhttp.open("POST", "/toggleOnOff", true);
             xhttp.send();
+            
+            document.getElementByName("blacklist").contentWindow.location.reload();
+            document.getElementByName("commandsList").contentWindow.location.reload();
         }
         
     </script>
@@ -149,28 +130,28 @@
     <body>
         <h1 align="center">DragonVibesBot</h1>
         <div class="center">
-            <form method="post" target="/toggleOnOff">
+            <form method="post" action="http://70.161.83.122:8080/toggleOnOff">
                 <button type="submit" class="button">Toggle On/Off</button>
             </form>
         </div>
         
         <h2 align="center">Blacklisted Words</h2>
         <p align="center">Here are the words already currently blacklisted: </p>
-        <div id="blacklist" class="center"></div>
+        <iframe src="blacklist.html" name="blacklist" class="center" style="border:1px solid lightgrey;"></iframe>
         <div class="center">
             <input type="radio" id="b1" name="blacklistType" value="add"> Add
             <input type="radio" id="b2" name="blacklistType" value="del"> Delete <br>
         </div>
         <p align="center">Add/Delete several words by seperating them by a comma: </p>
         <div class="center">
-            <input type="text" id="blacklistWords"/>
+            <textarea id="blacklistWords" rows="4" cols="50"></textarea>
             <br><br>
             <input type="button" class="button" value="Update" onClick="sendBlacklistData()">
         </div>
         
         <h2 align="center">Commands</h2>
         <p align="center">Here are the current commands: </p>
-        <div id="commandsList" class="center"></div>
+        <iframe src="commands.html" name="commandsList" class="center" style="border:1px solid lightgrey;"></iframe>
         <div class="center">
             <input type="radio" id="c1" name="commandType" value="add"> Add
             <input type="radio" id="c2" name="commandType" value="del"> Delete <br>

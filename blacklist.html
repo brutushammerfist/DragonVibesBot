@@ -1,0 +1,31 @@
+<html>
+    <script type="text/javascript">
+        //https://stackoverflow.com/questions/13709482/how-to-read-text-file-in-javascript
+        var req = new XMLHttpRequest();
+        req.onload = function() {
+            listGen(this.responseText);
+        };
+        req.open('GET', './blacklist.csv');
+        req.send();
+        
+        function listGen(payload) {
+            var listDiv = document.getElementById("blacklist");
+            var ul = document.createElement('ul');
+            var data = payload.split(',');
+            for (x in data) {
+                var li = document.createElement('li');
+                li.innerHTML = data[x];
+                ul.appendChild(li);
+            }
+            listDiv.appendChild(ul);
+        }
+    </script>
+    
+    <head>
+    
+    </head>
+    
+    <body>
+        <div id="blacklist" class="center"></div>
+    </body>
+</html>

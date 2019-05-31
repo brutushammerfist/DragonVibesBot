@@ -1,0 +1,31 @@
+<html>
+    <script type="text/javascript">
+        var req = new XMLHttpRequest();
+        req.onload = function() {
+            listGen(this.responseText);
+        };
+        req.open('GET', './commands.json');
+        req.send();
+        
+        function listGen(payload) {
+            var listDiv = document.getElementById("commandsList");
+            var ul = document.createElement('ul');
+            var data = JSON.parse(payload);
+            for (x in data) {
+                var li = document.createElement('li');
+                var cmdFull = x + " - " + data[x];
+                li.innerHTML = cmdFull;
+                ul.appendChild(li);
+            }
+            listDiv.appendChild(ul);
+        }
+    </script>
+    
+    <head>
+    
+    </head>
+    
+    <body>
+        <div id="commandsList" class="center"></div>
+    </body>
+</html>

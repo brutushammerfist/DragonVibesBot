@@ -51,8 +51,6 @@ if os.stat("blacklist.csv").st_size is not 0:
         words = blacklistFile.read()
     blacklist = words.split(",")
 
-#blacklist = words.split(",")
-
 pid = str(os.getpid())
 pidfile = "/tmp/dragonvibesbot.pid"
 
@@ -180,7 +178,7 @@ class Bot(commands.Bot):
         subscribe = requests.post('https://api.twitch.tv/helix/webhooks/hub', headers=headers, data=json.dumps(payload))
         print(subscribe.content)
         def httpMain():
-            httpd = HTTPServer(('0.0.0.0', 8004), SimpleHTTPRequestHandler)#int(Port)), SimpleHTTPRequestHandler)
+            httpd = HTTPServer(('0.0.0.0', 8004), SimpleHTTPRequestHandler)
             httpd.serve_forever()
         webhookThread = threading.Thread(target=httpMain)
         webhookThread.start()
@@ -331,12 +329,10 @@ class Bot(commands.Bot):
     async def distributeCoins(self):
         r = requests.get('https://tmi.twitch.tv/group/user/dracoasier/chatters')
         r = r.json()
-        #print(r)
         
         headers = {'Client-ID' : f'{twitchClientID}'}
         r2 = requests.get(f'https://api.twitch.tv/helix/streams?user_login=DracoAsier', headers=headers)
         r2 = r2.json()
-        #print(r2)
         
         tokenBank = {}
         tokenBankFile = open("tokenBank.json", "r")
@@ -365,7 +361,6 @@ class Bot(commands.Bot):
                         
         for x in categories:
             checkAndDist(tokenBank, x)
-            #print("Running Category: " + x)
             
         tokenBankFile = open("tokenBank.json", "w")
         json.dump(tokenBank, tokenBankFile)

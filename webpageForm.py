@@ -39,8 +39,9 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.wfile.write(query_parameters["hub.challenge"].encode("UTF-8"))
-        else:
+        elif :
         
+        else:
             key = self.server.get_auth_key()
             
             ''' Present frontpage with user authentication. '''
@@ -101,6 +102,16 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                         self.end_headers()
                         self.wfile.write(data)
                         file.close()
+                elif base_path.endswith(".css"):
+                    base_path = base_path[1:]
+                    print(base_path)
+                    if os.stat(base_path).st_size is not 0:
+                        with open("stylesheet.css", "r") as style:
+                            response = style.read()
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/css')
+                    self.end_headers()
+                    self.wfile.write(bytes(response, 'utf-8'))
                 
             else:
                 self.do_AUTHHEAD()

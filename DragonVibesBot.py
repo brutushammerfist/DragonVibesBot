@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 from webhookHandler import SimpleHTTPRequestHandler
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 import threading
+import time
 
 secretsFile = open("secrets.json", "r")
 secrets = json.load(secretsFile)
@@ -537,6 +538,20 @@ class Bot(commands.Bot):
     async def roarCommand(self, ctx):
         self.roarThread = threading.Thread(target=soundsServer.sendSound, args=(self.socketServer.websocketclass, "roar", ))
         self.roarThread.start()
+        
+    @commands.command(name="dvcannon")
+    async def cannonCommand(self, ctx):
+        params = ctx.content
+        params = params[10:]
+        
+        if params is not "":
+            await ctx.send(f'Locking onto {ctx.author}...Cannon loaded, firing in 10 seconds!!')
+            await time.sleep(10)
+            await ctx.send(f'dracoaDV https://i.imgur.com/IU3fBKw.gif FIRE!!')
+        else:
+            await ctx.send(f'Cannon loaded, firing in 10 seconds!!')
+            await time.sleep(10)
+            await ctx.send(f'dracoaDV https://i.imgur.com/IU3fBKw.gif FIRE!!')
 
 try:    
     print("Starting bot!")

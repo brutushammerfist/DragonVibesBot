@@ -110,6 +110,15 @@ class CustomServerHandler(http.server.BaseHTTPRequestHandler):
                     self.send_header('Content-type', 'text/css')
                     self.end_headers()
                     self.wfile.write(bytes(response, 'utf-8'))
+                else:
+                    base_path = base_path[1:]
+                    if os.stat(base_path).st_size is not 0:
+                        with open(base_path, "r") as style:
+                            response = style.read()
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/html')
+                    self.end_headers()
+                    self.wfile.write(bytes(response, 'utf-8'))
                 
             else:
                 self.do_AUTHHEAD()

@@ -545,7 +545,7 @@ class Bot(commands.Bot):
         params = params[10:]
         
         if params is not "":
-            await ctx.send(f'Locking onto {ctx.author}...Cannon loaded, firing in 10 seconds!!')
+            await ctx.send(f'Locking onto {params}...Cannon loaded, firing in 10 seconds!!')
             time.sleep(10)
             await ctx.send(f'dracoaDV https://i.imgur.com/IU3fBKw.gif FIRE!!')
         else:

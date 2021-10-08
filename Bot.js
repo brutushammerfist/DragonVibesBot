@@ -1,4 +1,5 @@
-const { Database } = require("sqlite3");
+//const { Database } = require("sqlite3");
+const Database = require('./Database.js');
 
 class Bot {
     /*constructor(database) {

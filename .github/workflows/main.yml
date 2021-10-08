@@ -33,5 +33,6 @@ jobs:
       - name: Run a multi-line script
         run: |
           pwd
+          ls -la
           npm install
           systemctl restart dvb

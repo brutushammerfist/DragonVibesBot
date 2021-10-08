@@ -1,11 +1,6 @@
-//const { Database } = require("sqlite3");
 const Database = require('./Database.js');
 
 class Bot {
-    /*constructor(database) {
-        this.commands = new Map();
-        this.db = database;
-    }*/
     constructor() {
         this.commands = new Map();
     }

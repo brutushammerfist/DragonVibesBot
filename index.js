@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const Bot = require("./Bot.js");
 const Twitch = require("./Twitch.js");
 const Discord = require("./Discord.js");

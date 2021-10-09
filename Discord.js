@@ -1,16 +1,18 @@
 require("./Bot.js");
 
 const { Client, Collection, Intents } = require('discord.js');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 
 class Discord {
     constructor(bot) {
         this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
-        this.client.once('ready', () => {
+        this.client.on('ready', () => {
             console.log('Discord Ready!');
         });
 
-        this.client.on('message', message => {
+        this.client.on('messageCreate', message => {
             this.handleMessage(message);
         });
 

@@ -13,5 +13,5 @@ var bot = new Bot();
 var twitch = new Twitch(secrets.oauth, bot);
 var discord = new Discord(bot);
 
-twitch.start();
+//twitch.start();
 discord.start(secrets.discToken);

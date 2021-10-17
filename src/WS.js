@@ -2,7 +2,7 @@ const { WebSocketServer } = require('ws');
 
 class WS {
     constructor() {
-        this.wss = new WebSocketServer({ port: 8080 });
+        this.wss = new WebSocketServer({ port: 8080, host: "brutus.dev" });
 
         this.wss.on('connection', function connection(ws) {
             ws.on('message', function incoming(message) {

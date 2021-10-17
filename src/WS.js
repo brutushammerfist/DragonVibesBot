@@ -14,7 +14,6 @@ class WS {
 
         this.wss.on('listening', function () {
             console.log("Websocket Server Started");
-            console.log(this.wss.address());
         });
     }
 }

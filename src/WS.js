@@ -17,7 +17,7 @@ wss.on('listening', function () {
 
 class WS {
     constructor() {
-        this.wss = new WebSocketServer({ port: 8888 });
+        this.wss = new WebSocketServer({ port: 8080 });
 
         this.wss.on('connection', function connection(ws) {
             ws.on('message', function incoming(message) {

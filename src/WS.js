@@ -9,3 +9,7 @@ wss.on('connection', function connection(ws) {
 
     ws.send('Ping');
 });
+
+wss.on('listening', function () {
+    console.log("Websocket Server Started");
+});

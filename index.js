@@ -3,6 +3,7 @@
 const Bot = require("./src/Bot.js");
 const Twitch = require("./src/Twitch.js");
 const Discord = require("./src/Discord.js");
+const WS = require("./src/WS.js");
 //const Database = require("./Database.js");
 
 var secrets = require("./secrets.json");

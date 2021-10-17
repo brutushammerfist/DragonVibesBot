@@ -6,9 +6,9 @@ var secrets = require("./secrets.json");
 
 class Database {
     constructor() {
-        if (!Database.instance) {
+        /*if (!Database.instance) {
             Database.instance = new Database();
-        }
+        }*/
 
         /*this.db = new sqlite3.Database('hoard.db');
 
@@ -18,8 +18,8 @@ class Database {
         this.db = mysql.createConnection({
             host: secrets.dbHost,
             user: secrets.dbUser,
-            password: secrests.dbPass,
-            database: secreats.dbName,
+            password: secrets.dbPass,
+            database: secrets.dbName,
             multipleStatements: true
         });
 
@@ -44,7 +44,7 @@ class Database {
             /*this.db = mysql.createConnection({
                 host: secrets.dbHost,
                 user: secrets.dbUser,
-                password: secrests.dbPass,
+                password: secrets.dbPass,
                 database: secrets.dbName,
                 multipleStatements: true
             });*/
@@ -64,6 +64,8 @@ class Database {
     }
 
     distributeCoins(online, usernames) {
+        this.ensureConnected();
+
         if (online) {
 
         } else {
@@ -72,6 +74,8 @@ class Database {
     }
 
     getCoins(username) {
+        this.ensureConnected();
+
         let sql = `SELECT coins FROM viewers WHERE username = ${username}`;
 
         this.db.query(sql, function (err, result, fields) {
@@ -82,4 +86,4 @@ class Database {
     }
 }
 
-module.exports = Database;
+module.exports = new Database();

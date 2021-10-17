@@ -5,7 +5,7 @@ const tmi = require('tmi.js');
 class Twitch {
     constructor(oauth_token, bot) {
         // Configuration Options
-        this.options = {
+        /*this.options = {
             identity: {
                 username: 'DragonVibesBot',
                 password: oauth_token
@@ -13,11 +13,21 @@ class Twitch {
             channels: [
                 'DracoAsier'
             ]
-        };
+        };*/
 
         this.bot = bot;
 
-        this.client = new tmi.Client(this.options);
+        //this.client = new tmi.Client(this.options);
+
+        this.client = new tmi.Client({
+            identity: {
+                username: 'DragonVibesBot',
+                password: oauth_token
+            },
+            channels: [
+                'DracoAsier'
+            ]
+        });
 
         this.client.on('message', (channel, tags, message, self) => {
             if (self || !message.startsWith("!")) return;
@@ -31,7 +41,7 @@ class Twitch {
     }
 
     start() {
-        this.client.connect();
+        this.client.connect().catch(console.error);
     }
 }
 

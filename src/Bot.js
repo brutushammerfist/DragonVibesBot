@@ -1,4 +1,4 @@
-const Database = require('./Database.js');
+//const Database = require('./Database.js');
 
 class Bot {
     constructor() {
@@ -13,7 +13,8 @@ class Bot {
                 break;
             case "coins":
                 //return username + " has accumulated " + this.db.getCoins(username) + "coins in their hoard!";
-                return username + " has accumulated " + Database.instance.getCoins(username) + "coins in their hoard!";
+                return username + " has accumulated " + Database.getCoins(username) + "coins in their hoard!";
+            //return "";
             default:
                 return "";
         }

@@ -1,4 +1,5 @@
-import WebSocket, { WebSocketServer } from "ws";
+//import WebSocket, { WebSocketServer } from "ws";
+const WSocket = require('ws');
 
 /*const wss = new WebSocketServer({ port: 8888 });
 
@@ -16,7 +17,9 @@ wss.on('listening', function () {
 
 class WS {
     constructor() {
-        wss.on('connection', function connection(ws) {
+        this.wss = new WSocket.WebSocketServer({ port: 8888 });
+
+        this.wss.on('connection', function connection(ws) {
             ws.on('message', function incoming(message) {
                 console.log('received: %s', message);
             });
@@ -24,7 +27,7 @@ class WS {
             ws.send('Ping');
         });
 
-        wss.on('listening', function () {
+        this.wss.on('listening', function () {
             console.log("Websocket Server Started");
         });
     }

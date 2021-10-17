@@ -1,8 +1,9 @@
 const { WebSocketServer } = require('ws');
+const https = require('https');
 
 class WS {
     constructor() {
-        this.wss = new WebSocketServer({ port: 8080, path: '/ws' });
+        this.wss = new WebSocketServer({ port: 8080, server: https.Server });
 
         this.wss.on('connection', function connection(ws) {
             ws.on('message', function incoming(message) {

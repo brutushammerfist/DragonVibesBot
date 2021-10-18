@@ -16,10 +16,12 @@ class WS {
         this.wss.on('connection', function connection(ws) {
             this.ws = ws;
 
-            this.ws.on('message', function incoming(message) {
+            /*this.ws.on('message', function incoming(message) {
                 console.log('received: %s', message);
                 this.handleMessage(message);
-            });
+            });*/
+
+            this.ws.on('message', this.handleMessage(message));
 
             this.ws.send('something');
         });
@@ -40,6 +42,8 @@ class WS {
     }
 
     handleMessage(message) {
+        console.log('received: %s', message);
+
         switch (message) {
             case "clear-giveaway":
                 Bot.clearGiveaway();
@@ -63,7 +67,7 @@ class WS {
                 if (data.removePool) {
                     Bot.removePoolEntry(data.removePool);
                 }
-        }
+        };
     }
 }
 

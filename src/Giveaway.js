@@ -30,8 +30,6 @@ class Giveaway {
             if (!this.giveawayPool.includes(username)) {
                 this.giveawayPool.push(username);
 
-                WS.broadcastMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
-
                 return `@${username}, you've successfully been entered into the giveaway.`;
             }
 
@@ -46,7 +44,6 @@ class Giveaway {
             if (!this.poolPool.includes(username)) {
                 this.poolPool.push(username);
 
-                WS.broadcastMessage(JSON.stringify({ poolEntries: this.poolPool }));
 
                 return `@${username}, you've successfully been entered into the pool.`;
             }

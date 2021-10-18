@@ -1,4 +1,4 @@
-require("./Bot.js");
+const Bot = require("./Bot.js");
 
 const { Client, Collection, Intents } = require('discord.js');
 const { REST } = require('@discordjs/rest');
@@ -16,13 +16,14 @@ class Discord {
             this.handleMessage(message);
         });
 
-        this.bot = bot;
+        //this.bot = bot;
     }
 
     async handleMessage(message) {
         if (!message.content.startsWith("!")) return;
 
-        message.reply(this.bot.handleCommand(message.content.split(' ')[0].substring(1), message.author.username));
+        //message.reply(this.bot.handleCommand(message.content.split(' ')[0].substring(1), message.author.username));
+        message.reply(Bot.handleCommand(message.content.split(' ')[0].substring(1), message.author.username));
     }
 
     start(token) {

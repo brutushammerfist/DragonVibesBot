@@ -1,7 +1,9 @@
 const Bot = require('./Bot.js');
 
 class WSMsgHandler {
-    constructor() { }
+    constructor() {
+        console.log("Msg Handler Created!");
+    }
 
     handleMessage(message) {
         console.log('received: %s', message);

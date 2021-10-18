@@ -19,6 +19,10 @@ class Bot {
                 return TwitchAPI.uptime();
             case "coins":
                 return username + " has accumulated " + Database.getCoins(username) + "coins in their hoard!";
+            case "openga":
+                return this.openGiveaway();
+            case "openpool":
+                return this.openPool();
             case "enter":
                 return this.enterGiveaway(username);
             case "pool":
@@ -31,6 +35,24 @@ class Bot {
     /****
      * Giveaway Functions
      */
+
+    openGiveaway() {
+        if (this.giveawayActive) {
+            return "Giveaway is already active!";
+        }
+
+        this.giveawayActive = true;
+        return "Giveaway started!";
+    }
+
+    openPool() {
+        if (this.poolActive) {
+            return "Pool is already open!";
+        }
+
+        this.poolActive = true;
+        return "Pool opened!";
+    }
 
     enterGiveaway(username) {
         if (this.giveawayActive) {

@@ -28,7 +28,7 @@ class Database {
         var creationCmds = [
             "CREATE DATABASE IF NOT EXISTS hoard",
             "CREATE TABLE IF NOT EXISTS `viewers` (username VARCHAR(25) NOT NULL PRIMARY KEY, coins INT)",
-            "CREATE TABLE IF NOT EXISTS `commands` (`trigger` TEXT PRIMARY KEY, response TEXT)"
+            "CREATE TABLE IF NOT EXISTS `commands` (`trigger` VARCHAR(50) NOT NULL PRIMARY KEY, response TEXT)"
         ];
 
         this.db.connect(function (err) {

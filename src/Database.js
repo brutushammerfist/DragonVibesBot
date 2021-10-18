@@ -57,7 +57,7 @@ class Database {
             });*/
         });
 
-        for (cmd in creationCmds) {
+        for (var cmd in creationCmds) {
             this.db.query(cmd, function (err, result) {
                 if (err) throw err;
             });

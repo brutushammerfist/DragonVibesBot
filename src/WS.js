@@ -16,12 +16,34 @@ class WS {
         this.wss.on('connection', function connection(ws) {
             this.ws = ws;
 
-            /*this.ws.on('message', function incoming(message) {
+            this.ws.on('message', function incoming(message) {
                 console.log('received: %s', message);
-                this.handleMessage(message);
-            });*/
 
-            this.ws.on('message', this.handleMessage);
+                switch (message) {
+                    case "clear-giveaway":
+                        Bot.clearGiveaway();
+                        break;
+                    case "clear-pool":
+                        Bot.clearPool();
+                        break;
+                    case "pull-giveaway":
+                        Bot.pullGiveaway();
+                        break;
+                    case "pull-pool":
+                        Bot.pullPool();
+                        break;
+                    default:
+                        var data = JSON.parse(message);
+
+                        if (data.removeGiveaway) {
+                            Bot.removeGiveawayEntry(data.removeGiveaway);
+                        }
+
+                        if (data.removePool) {
+                            Bot.removePoolEntry(data.removePool);
+                        }
+                };
+            });
 
             this.ws.send('something');
         });

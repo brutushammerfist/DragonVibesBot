@@ -33,14 +33,18 @@ class WS {
                         Bot.pullPool();
                         break;
                     default:
-                        var data = JSON.parse(message);
+                        try {
+                            var data = JSON.parse(message);
 
-                        if (data.removeGiveaway) {
-                            Bot.removeGiveawayEntry(data.removeGiveaway);
-                        }
+                            if (data.removeGiveaway) {
+                                Bot.removeGiveawayEntry(data.removeGiveaway);
+                            }
 
-                        if (data.removePool) {
-                            Bot.removePoolEntry(data.removePool);
+                            if (data.removePool) {
+                                Bot.removePoolEntry(data.removePool);
+                            }
+                        } catch (err) {
+                            console.log(err);
                         }
                 };
             });

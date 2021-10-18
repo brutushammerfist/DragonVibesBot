@@ -4,9 +4,9 @@ const secrets = require('../secrets.json');
 
 class TwitchAPI {
     constructor() {
-        const appAuthProvider = new ClientCredentialsAuthProvider(secrets.clientID, secrets.clientSecret);
+        this.appAuthProvider = new ClientCredentialsAuthProvider(secrets.clientID, secrets.clientSecret);
 
-        this.api = new ApiClient({ appAuthProvider });
+        this.api = new ApiClient({ authProvider: this.appAuthProvider });
     }
 
     isOnline() {

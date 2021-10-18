@@ -28,14 +28,20 @@ class Database {
         this.db.connect(function (err) {
             if (err) throw err;
             console.log("Database Connected!");
-            var creationSQL = fs.readFileSync("../hoard.sql", 'utf8', (err, data) => {
-                if (err) throw err;
-                return data;
-            });//.toString();
 
-            this.db.query(creationSQL, function (err, result) {
+            this.db.query("CREATE DATABASE IF NOT EXISTS hoard;", function (err, result) {
                 if (err) throw err;
                 console.log("Database Built...");
+            });
+
+            this.db.query("CREATE TABLE IF NOT EXISTS `viewers` (username VARCHAR(25) NOT NULL PRIMARY KEY, coins INT);", function (err, result) {
+                if (err) throw err;
+                console.log("Table viewers Built...");
+            });
+
+            this.db.query("CREATE TABLE IF NOT EXISTS `commands` (trigger TEXT PRIMARY KEY, response TEXT);", function (err, result) {
+                if (err) throw err;
+                console.log("Table commands Built...");
             });
         });
     }

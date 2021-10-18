@@ -2,6 +2,7 @@ const { readFileSync } = require('fs');
 const { createServer } = require('https');
 const { WebSocketServer } = require('ws');
 const secrets = require('../secrets.json');
+const Bot = require('./Bot.js');
 
 class WS {
     constructor() {
@@ -17,6 +18,7 @@ class WS {
 
             this.ws.on('message', function incoming(message) {
                 console.log('received: %s', message);
+                this.handleMessage(message);
             });
 
             this.ws.send('something');
@@ -35,6 +37,33 @@ class WS {
                 client.send(message);
             }
         });
+    }
+
+    handleMessage(message) {
+        switch (message) {
+            case "clear-giveaway":
+                Bot.clearGiveaway();
+                break;
+            case "clear-pool":
+                Bot.clearPool();
+                break;
+            case "pull-giveaway":
+                Bot.pullGiveaway();
+                break;
+            case "pull-pool":
+                Bot.pullPool();
+                break;
+            default:
+                var data = JSON.parse(message);
+
+                if (data.removeGiveaway) {
+                    Bot.removeGiveawayEntry(data.removeGiveaway);
+                }
+
+                if (data.removePool) {
+                    Bot.removePoolEntry(data.removePool);
+                }
+        }
     }
 }
 

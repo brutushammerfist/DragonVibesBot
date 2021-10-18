@@ -21,7 +21,7 @@ class WS {
                 this.handleMessage(message);
             });*/
 
-            this.ws.on('message', this.handleMessage(message));
+            this.ws.on('message', this.handleMessage);
 
             this.ws.send('something');
         });

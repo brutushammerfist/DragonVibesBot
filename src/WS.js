@@ -1,12 +1,13 @@
 const { readFileSync } = require('fs');
 const { createServer } = require('https');
 const { WebSocketServer } = require('ws');
+const secrets = require('../secrets.json');
 
 class WS {
     constructor() {
         this.server = createServer({
-            cert: readFileSync("/etc/letsencrypt/live/brutus.dev/fullchain.pem"),
-            key: readFileSync("/etc/letsencrypt/live/brutus.dev/privkey.pem")
+            cert: readFileSync(secrets.certPath),
+            key: readFileSync(secrets.keyPath)
         });
 
         this.wss = new WebSocketServer({ server: this.server });

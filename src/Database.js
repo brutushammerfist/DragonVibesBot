@@ -1,4 +1,5 @@
 //const sqlite3 = require('sqlite3').verbose();
+const TwitchAPI = require('./TwitchAPI.js');
 const mysql = require('mysql');
 const fs = require('fs');
 
@@ -32,6 +33,22 @@ class Database {
         }
     }
 
+    loadCommands() {
+        this.ensureConnected()
+
+        var sql = "SELECT * FROM `commands`";
+
+        var cmds = new Map();
+
+        this.db.query(sql, function (err, result, fields) {
+            for (var cmd in result) {
+                cmds.set(result[cmd].trigger, result[cmd].response);
+            }
+        });
+
+        return cmds;
+    }
+
     ensureConnected() {
         if (this.db.state == "disconnected") {
             this.db.connect(function (err) {
@@ -42,20 +59,49 @@ class Database {
     }
 
     addCommand(commandName, response) {
+        var sql = `INSERT INTO \`commands\` (\`trigger\`, response) VALUES (${commandName}, ${response})`;
 
+        this.db.query(sql, function (err, result) {
+            if (err) throw err;
+        });
     }
 
     deleteCommand(commandName) {
+        var sql = `DELETE FROM \`commands\` WHERE \`trigger\`=${commandName}`;
 
+        this.db.query(sql, function (err, result) {
+            if (err) throw err;
+        });
     }
 
     distributeCoins(online, usernames) {
         this.ensureConnected();
 
-        if (online) {
+        var viewers = TwitchAPI.getViewers();
+        var coins = 1;
 
-        } else {
+        if (TwitchAPI.isOnline()) {
+            coins = 4;
+        }
 
+        var sql = 'INSERT INTO `viewers` (username, coins) VALUES (%s, %d) ON DUPLICATE KEY UPDATE coins = coins + %d';
+
+        for (i in viewers.chatters.vips) {
+            this.db.query(util.format(sql, viewers.chatters.vips[i], coins, coins), function (err, result) {
+                if (err) throw err;
+            });
+        }
+
+        for (i in viewers.chatters.moderators) {
+            this.db.query(util.format(sql, viewers.chatters.moderators[i], coins, coins), function (err, result) {
+                if (err) throw err;
+            });
+        }
+
+        for (i in viewers.chatters.viewers) {
+            this.db.query(util.format(sql, viewers.chatters.viewers[i], coins, coins), function (err, result) {
+                if (err) throw err;
+            });
         }
     }
 
@@ -67,7 +113,6 @@ class Database {
         this.db.query(sql, function (err, result, fields) {
             if (err) throw err;
             return result;
-            //return Number(result);
         });
     }
 }

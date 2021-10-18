@@ -1,6 +1,10 @@
 const { ClientCredentialsAuthProvider } = require('@twurple/auth');
 const { ApiClient } = require('@twurple/api');
+const bent = require('bent');
+const getJSON = bent('json');
+
 const secrets = require('../secrets.json');
+
 
 class TwitchAPI {
     constructor() {
@@ -13,6 +17,10 @@ class TwitchAPI {
         var stream = this.api.streams.getStreamByUserId(secrets.userID);
 
         return (stream.type == "live");
+    }
+
+    getViewers() {
+        return getJSON('https://tmi.twitch.tv/group/user/dracoasier/chatters');
     }
 
     uptime() {

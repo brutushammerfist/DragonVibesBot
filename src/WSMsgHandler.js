@@ -37,4 +37,4 @@ class WSMsgHandler {
     }
 }
 
-module.exports = WSMsgHandler;
+module.exports = new WSMsgHandler();

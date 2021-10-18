@@ -6,8 +6,6 @@ const WSMsgHandler = require('./WSMsgHandler');
 
 class WS {
     constructor() {
-        this.handler = new WSMsgHandler();
-
         this.server = createServer({
             cert: readFileSync(secrets.certPath),
             key: readFileSync(secrets.keyPath)
@@ -19,7 +17,7 @@ class WS {
             this.ws = ws;
 
             this.ws.on('message', function incoming(message) {
-                this.handler.handleMessage(message);
+                WSMsgHandler.handleMessage(message);
             });
 
             this.ws.send('something');

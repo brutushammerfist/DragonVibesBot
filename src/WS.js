@@ -3,7 +3,6 @@ const { createServer } = require('https');
 const { WebSocketServer } = require('ws');
 const secrets = require('../secrets.json');
 const WSMsgHandler = require('./WSMsgHandler');
-//const Bot = require('./Bot.js');
 
 class WS {
     constructor() {
@@ -19,7 +18,9 @@ class WS {
         this.wss.on('connection', function connection(ws) {
             this.ws = ws;
 
-            this.ws.on('message', this.handler.handleMessage);
+            this.ws.on('message', function incoming(message) {
+                this.handler.handleMessage(message);
+            });
 
             this.ws.send('something');
         });

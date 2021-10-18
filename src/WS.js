@@ -13,11 +13,13 @@ class WS {
         this.wss = new WebSocketServer({ server: this.server });
 
         this.wss.on('connection', function connection(ws) {
-            ws.on('message', function incoming(message) {
+            this.ws = ws;
+
+            this.ws.on('message', function incoming(message) {
                 console.log('received: %s', message);
             });
 
-            ws.send('something');
+            this.ws.send('something');
         });
 
         this.wss.on('listening', function () {
@@ -27,8 +29,12 @@ class WS {
         this.server.listen(8080);
     }
 
-    broadcastMessage() {
-
+    broadcastMessage(message) {
+        this.wss.clients.forEach(function each(client) {
+            if (client !== this.ws && client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
     }
 }
 

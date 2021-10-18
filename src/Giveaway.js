@@ -82,3 +82,5 @@ class Giveaway {
         this.poolPool.splice(this.poolPool.indexOf(username), 1);
     }
 }
+
+module.exports = new Giveaway();

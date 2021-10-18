@@ -2,6 +2,7 @@ const { readFileSync } = require('fs');
 const { createServer } = require('https');
 const { WebSocketServer } = require('ws');
 const secrets = require('../secrets.json');
+const Giveaway = require('./Giveaway.js');
 
 class WS {
     constructor() {

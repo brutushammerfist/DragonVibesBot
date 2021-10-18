@@ -86,6 +86,8 @@ class WS {
             default:
                 var data = JSON.parse(message);
 
+                console.log(data);
+
                 if (data.removeGiveaway) {
                     Bot.removeGiveawayEntry(data.removeGiveaway);
                 }

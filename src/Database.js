@@ -30,7 +30,7 @@ class Database {
             console.log("Database Connected!");
             var creationSQL = fs.readFile("../hoard.sql", 'utf8', (err, data) => {
                 if (err) throw err;
-            }).toString();
+            });//.toString();
 
             this.db.query(creationSQL, function (err, result) {
                 if (err) throw err;

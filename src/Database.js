@@ -25,11 +25,23 @@ class Database {
 
         console.log(this.db.state);
 
+        var creationCmds = [
+            "CREATE DATABASE IF NOT EXISTS hoard",
+            "CREATE TABLE IF NOT EXISTS `viewers` (username VARCHAR(25) NOT NULL PRIMARY KEY, coins INT)",
+            "CREATE TABLE IF NOT EXISTS `commands` (trigger TEXT PRIMARY KEY, response TEXT)"
+        ];
+
         this.db.connect(function (err) {
             if (err) throw err;
             console.log("Database Connected!");
 
-            this.db.query("CREATE DATABASE IF NOT EXISTS hoard;", function (err, result) {
+            /*var creationCmds = [
+                "CREATE DATABASE IF NOT EXISTS hoard",
+                "CREATE TABLE IF NOT EXISTS `viewers` (username VARCHAR(25) NOT NULL PRIMARY KEY, coins INT)",
+                "CREATE TABLE IF NOT EXISTS `commands` (trigger TEXT PRIMARY KEY, response TEXT)"
+            ];*/
+
+            /*this.db.query("CREATE DATABASE IF NOT EXISTS hoard;", function (err, result) {
                 if (err) throw err;
                 console.log("Database Built...");
             });
@@ -42,8 +54,14 @@ class Database {
             this.db.query("CREATE TABLE IF NOT EXISTS `commands` (trigger TEXT PRIMARY KEY, response TEXT);", function (err, result) {
                 if (err) throw err;
                 console.log("Table commands Built...");
-            });
+            });*/
         });
+
+        for (cmd in creationCmds) {
+            this.db.query(cmd, function (err, result) {
+                if (err) throw err;
+            });
+        }
     }
 
     ensureConnected() {

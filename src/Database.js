@@ -28,8 +28,9 @@ class Database {
         this.db.connect(function (err) {
             if (err) throw err;
             console.log("Database Connected!");
-            var creationSQL = fs.readFile("../hoard.sql", 'utf8', (err, data) => {
+            var creationSQL = fs.readFileSync("../hoard.sql", 'utf8', (err, data) => {
                 if (err) throw err;
+                return data;
             });//.toString();
 
             this.db.query(creationSQL, function (err, result) {

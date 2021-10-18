@@ -17,38 +17,7 @@ class WS {
             this.ws = ws;
 
             this.ws.on('message', function incoming(message) {
-                console.log('received: %s', message);
-
-                switch (message) {
-                    case "clear-giveaway":
-                        Giveaway.clearGiveaway();
-                        this.broadcastMessage("clear-giveaway");
-                        break;
-                    case "clear-pool":
-                        Giveaway.clearPool();
-                        this.broadcastMessage("clear-pool");
-                        break;
-                    case "pull-giveaway":
-                        Giveaway.pullGiveaway();
-                        break;
-                    case "pull-pool":
-                        Giveaway.pullPool();
-                        break;
-                    default:
-                        var data = JSON.parse(message);
-
-                        console.log(data);
-
-                        if (data.removeGiveaway) {
-                            Giveaway.removeGiveawayEntry(data.removeGiveaway);
-                            this.broadcastMessage(JSON.stringify({ giveawayEntries: Giveaway.giveawayPool }));
-                        }
-
-                        if (data.removePool) {
-                            Giveaway.removePoolEntry(data.removePool);
-                            this.broadcastMessage(JSON.stringify({ giveawayEntries: Giveaway.poolPool }));
-                        }
-                };
+                this.handleMessage(message);
             });
 
             this.ws.send('something');

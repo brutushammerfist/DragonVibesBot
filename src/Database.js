@@ -2,7 +2,7 @@
 const mysql = require('mysql');
 const fs = require('fs');
 
-var secrets = require("./secrets.json");
+var secrets = require("../secrets.json");
 
 class Database {
     constructor() {

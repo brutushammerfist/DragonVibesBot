@@ -37,8 +37,7 @@ class Database {
         });
 
         for (var cmd in creationCmds) {
-            console.log(cmd);
-            this.db.query(cmd, function (err, result) {
+            this.db.query(creationCmds[cmd], function (err, result) {
                 if (err) throw err;
             });
         }

@@ -15,14 +15,11 @@ class Discord {
         this.client.on('messageCreate', message => {
             this.handleMessage(message);
         });
-
-        //this.bot = bot;
     }
 
     async handleMessage(message) {
         if (!message.content.startsWith("!")) return;
 
-        //message.reply(this.bot.handleCommand(message.content.split(' ')[0].substring(1), message.author.username));
         message.reply(Bot.handleCommand(message.content.split(' ')[0].substring(1), message.author.username));
     }
 

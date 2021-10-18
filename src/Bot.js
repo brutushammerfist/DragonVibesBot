@@ -1,4 +1,5 @@
 const Database = require('./Database.js');
+const TwitchAPI = require('./TwitchAPI.js');
 
 class Bot {
     constructor() {
@@ -10,13 +11,11 @@ class Bot {
             case "test":
                 return "I'm STILL being lobotomized!";
             case "uptime":
-                break;
+                return TwitchAPI.uptime();
             case "coins":
-                //return username + " has accumulated " + this.db.getCoins(username) + "coins in their hoard!";
                 return username + " has accumulated " + Database.getCoins(username) + "coins in their hoard!";
-            //return "";
             default:
-                return "";
+                return "Invalid Command!";
         }
     }
 }

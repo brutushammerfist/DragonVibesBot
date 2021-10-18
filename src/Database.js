@@ -6,15 +6,6 @@ var secrets = require("../secrets.json");
 
 class Database {
     constructor() {
-        /*if (!Database.instance) {
-            Database.instance = new Database();
-        }*/
-
-        /*this.db = new sqlite3.Database('hoard.db');
-
-        this.db.run("CREATE TABLE IF NOT EXISTS viewers (username TEXT, coins INTEGER)");
-        this.db.run("CREATE TABLE IF NOT EXISTS commands (trigger TEXT, response TEXT)");*/
-
         this.db = mysql.createConnection({
             host: secrets.dbHost,
             user: secrets.dbUser,
@@ -22,8 +13,6 @@ class Database {
             database: secrets.dbName,
             multipleStatements: true
         });
-
-        //console.log(this.db.state);
 
         var creationCmds = [
             "CREATE DATABASE IF NOT EXISTS hoard",
@@ -45,13 +34,6 @@ class Database {
 
     ensureConnected() {
         if (this.db.state == "disconnected") {
-            /*this.db = mysql.createConnection({
-                host: secrets.dbHost,
-                user: secrets.dbUser,
-                password: secrets.dbPass,
-                database: secrets.dbName,
-                multipleStatements: true
-            });*/
             this.db.connect(function (err) {
                 if (err) throw err;
                 console.log("Database Reconnected!");

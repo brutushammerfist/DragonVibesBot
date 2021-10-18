@@ -25,6 +25,10 @@ class WS {
 
         this.server.listen(8080);
     }
+
+    broadcastMessage() {
+
+    }
 }
 
 module.exports = new WS();

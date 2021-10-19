@@ -35,6 +35,8 @@ class Bot {
             console.log("Websocket Server Started");
         });
 
+        this.wsServer.listen(8080);
+
         /***
          * Commands
          */

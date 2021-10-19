@@ -54,18 +54,18 @@ class Bot {
 
         switch (message) {
             case "clear-giveaway":
-                this.clearGiveaway();
-                this.ws.broadcastMessage("clear-giveaway");
+                Bot.clearGiveaway();
+                Bot.ws.broadcastMessage("clear-giveaway");
                 break;
             case "clear-pool":
-                this.clearPool();
-                this.ws.broadcastMessage("clear-pool");
+                Bot.clearPool();
+                Bot.ws.broadcastMessage("clear-pool");
                 break;
             case "pull-giveaway":
-                this.pullGiveaway();
+                Bot.pullGiveaway();
                 break;
             case "pull-pool":
-                this.pullPool();
+                Bot.pullPool();
                 break;
             default:
                 var data = JSON.parse(message);
@@ -73,13 +73,13 @@ class Bot {
                 console.log(data);
 
                 if (data.removeGiveaway) {
-                    this.removeGiveawayEntry(data.removeGiveaway);
-                    this.ws.broadcastMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
+                    Bot.removeGiveawayEntry(data.removeGiveaway);
+                    Bot.ws.broadcastMessage(JSON.stringify({ giveawayEntries: Bot.giveawayPool }));
                 }
 
                 if (data.removePool) {
-                    this.removePoolEntry(data.removePool);
-                    this.ws.broadcastMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
+                    Bot.removePoolEntry(data.removePool);
+                    Bot.ws.broadcastMessage(JSON.stringify({ giveawayEntries: Bot.poolPool }));
                 }
         };
     }

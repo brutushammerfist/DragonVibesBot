@@ -11,16 +11,13 @@ class Bot {
         /***
          * Websocket
          */
-        /*this.ws = new WS();
-        this.ws.onmessage(this.handleWSMessage);
-        this.ws.start();*/
+
         this.wsServer = createServer({
             cert: readFileSync(secrets.certPath),
             key: readFileSync(secrets.keyPath)
         });
 
         this.wss = new WebSocketServer({ server: this.wsServer });
-
         this.wss.bot = this;
 
         this.wss.on('connection', function connection(ws) {
@@ -53,6 +50,10 @@ class Bot {
         this.poolPool = [];
     }
 
+    /***
+     * Bot Commands
+     */
+
     handleCommand(commandName, username) {
         switch (commandName) {
             case "test":
@@ -69,14 +70,14 @@ class Bot {
                 //return Giveaway.enterGiveaway(username);
                 var response = this.enterGiveaway(username);
                 if (response.includes("successfully")) {
-                    this.ws.broadcastMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
+                    this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
                 }
                 return response;
             case "pool":
                 //return Giveaway.enterPool(username);
                 var response = this.enterPool(username);
                 if (response.includes("successfully")) {
-                    this.ws.broadcastMessage(JSON.stringify({ poolEntries: this.poolPool }));
+                    this.broadcastWSMessage(JSON.stringify({ poolEntries: this.poolPool }));
                 }
                 return response;
             default:
@@ -206,7 +207,7 @@ class Bot {
         this.poolPool = [];
     }
 
-    removePoolEntry() {
+    removePoolEntry(username) {
         this.poolPool.splice(this.poolPool.indexOf(username), 1);
     }
 }

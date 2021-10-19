@@ -25,6 +25,8 @@ class Bot {
 
         this.wss.on('connection', function connection(ws) {
             ws.bot = this.bot;
+            this.bot.ws = ws;
+
             ws.on('message', function (message) {
                 this.bot.handleWSMessage(message);
             });
@@ -124,7 +126,7 @@ class Bot {
 
     broadcastWSMessage(message) {
         this.wss.clients.forEach(function each(client) {
-            if (client !== this.ws && client.readyState === WebSocket.OPEN) {
+            if (client !== this.bot.ws && client.readyState === WebSocket.OPEN) {
                 client.send(message);
             }
         });

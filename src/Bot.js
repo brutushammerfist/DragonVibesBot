@@ -26,7 +26,7 @@ class Bot {
 
             this.ws.on('message', function incoming(message) {
                 //this.handleWSMessage(message);
-                console.log(this);
+                console.log(typeof this);
                 console.log('received: %s', message);
 
                 switch (message) {

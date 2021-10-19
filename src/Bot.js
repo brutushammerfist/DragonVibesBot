@@ -126,7 +126,7 @@ class Bot {
 
     broadcastWSMessage(message) {
         this.wss.clients.forEach(function each(client) {
-            if (client !== this.bot.ws && client.readyState === WebSocket.OPEN) {
+            if (client !== this.ws && client.readyState === WebSocket.OPEN) {
                 client.send(message);
             }
         });

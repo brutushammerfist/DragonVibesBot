@@ -3,7 +3,7 @@ const Database = require('./Database.js');
 const TwitchAPI = require('./TwitchAPI.js');
 const secrets = require('../secrets.json');
 const { readFileSync } = require('fs');
-const { WebSocketServer } = require('ws');
+const { WebSocketServer, WebSocket } = require('ws');
 //const WS = require('./WS.js');
 
 class Bot {

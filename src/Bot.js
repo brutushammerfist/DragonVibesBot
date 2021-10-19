@@ -24,9 +24,9 @@ class Bot {
         this.wss.on('connection', function connection(ws) {
             this.ws = ws;
 
-            /*this.ws.on('message', function incoming(message) {
-                //this.handleWSMessage(message);
-                console.log(typeof this);
+            this.ws.on('message', function incoming(message) {
+                handleWSMessage(message);
+                /*console.log(typeof this);
                 console.log('received: %s', message);
 
                 switch (message) {
@@ -58,10 +58,10 @@ class Bot {
                             this.removePoolEntry(data.removePool);
                             this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
                         }
-                };
-            });*/
+                };*/
+            });
 
-            this.ws.onmessage = this.handleWSMessage;
+            //this.ws.onmessage = this.handleWSMessage;
 
             this.ws.send('Connected!');
         });

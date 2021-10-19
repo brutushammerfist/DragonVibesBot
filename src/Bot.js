@@ -1,13 +1,48 @@
+const { createServer } = require('https');
 const Database = require('./Database.js');
 const TwitchAPI = require('./TwitchAPI.js');
-const WS = require('./WS.js');
+const secrets = require('../secrets.json');
+const { readFileSync } = require('fs');
+const { WebSocketServer } = require('ws');
+//const WS = require('./WS.js');
 
 class Bot {
     constructor() {
-        this.ws = new WS();
+        /***
+         * Websocket
+         */
+        /*this.ws = new WS();
         this.ws.onmessage(this.handleWSMessage);
-        this.ws.start();
+        this.ws.start();*/
+        this.wsServer = createServer({
+            cert: readFileSync(secrets.certPath),
+            key: readFileSync(secrets.keyPath)
+        });
+
+        this.wss = new WebSocketServer({ server: this.wsServer });
+
+        this.wss.on('connection', function connection(ws) {
+            this.ws = ws;
+
+            this.ws.on('message', function incoming(message) {
+                this.handleWSMessage(message);
+            });
+
+            this.ws.send('Connected!');
+        });
+
+        this.wss.on('listening', function () {
+            console.log("Websocket Server Started");
+        });
+
+        /***
+         * Commands
+         */
         this.commands = new Map();
+
+        /***
+         * Giveaway/Pool
+         */
         this.giveawayActive = false;
         this.poolActive = false;
         this.giveawayPool = [];
@@ -54,18 +89,18 @@ class Bot {
 
         switch (message) {
             case "clear-giveaway":
-                Bot.clearGiveaway();
-                Bot.ws.broadcastMessage("clear-giveaway");
+                this.clearGiveaway();
+                this.broadcastWSMessage("clear-giveaway");
                 break;
             case "clear-pool":
-                Bot.clearPool();
-                Bot.ws.broadcastMessage("clear-pool");
+                this.clearPool();
+                this.broadcastWSMessage("clear-pool");
                 break;
             case "pull-giveaway":
-                Bot.pullGiveaway();
+                this.pullGiveaway();
                 break;
             case "pull-pool":
-                Bot.pullPool();
+                this.pullPool();
                 break;
             default:
                 var data = JSON.parse(message);
@@ -73,15 +108,23 @@ class Bot {
                 console.log(data);
 
                 if (data.removeGiveaway) {
-                    Bot.removeGiveawayEntry(data.removeGiveaway);
-                    Bot.ws.broadcastMessage(JSON.stringify({ giveawayEntries: Bot.giveawayPool }));
+                    this.removeGiveawayEntry(data.removeGiveaway);
+                    this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
                 }
 
                 if (data.removePool) {
-                    Bot.removePoolEntry(data.removePool);
-                    Bot.ws.broadcastMessage(JSON.stringify({ giveawayEntries: Bot.poolPool }));
+                    this.removePoolEntry(data.removePool);
+                    this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
                 }
         };
+    }
+
+    broadcastWSMessage(message) {
+        this.wss.clients.forEach(function each(client) {
+            if (client !== this.ws && client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
     }
 
     /***

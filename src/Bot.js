@@ -108,18 +108,20 @@ class Bot {
                 this.pullPool();
                 break;
             default:
-                var data = JSON.parse(message);
+                try {
+                    var data = JSON.parse(message);
 
-                console.log(data);
+                    if (data.removeGiveaway) {
+                        this.removeGiveawayEntry(data.removeGiveaway);
+                        this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
+                    }
 
-                if (data.removeGiveaway) {
-                    this.removeGiveawayEntry(data.removeGiveaway);
-                    this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
-                }
-
-                if (data.removePool) {
-                    this.removePoolEntry(data.removePool);
-                    this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
+                    if (data.removePool) {
+                        this.removePoolEntry(data.removePool);
+                        this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
+                    }
+                } catch (err) {
+                    console.log(err);
                 }
         };
     }

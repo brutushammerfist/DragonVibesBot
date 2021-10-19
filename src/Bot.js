@@ -5,6 +5,7 @@ const WS = require('./WS.js');
 class Bot {
     constructor() {
         this.ws = new WS();
+        this.ws.onmessage(this.handleWSMessage);
         this.commands = new Map();
         this.giveawayActive = false;
         this.poolActive = false;

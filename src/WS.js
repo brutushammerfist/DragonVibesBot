@@ -12,7 +12,7 @@ class WS {
 
         this.wss = new WebSocketServer({ server: this.server });
 
-        this.wss.on('connection', function connection(ws) {
+        /*this.wss.on('connection', function connection(ws) {
             this.ws = ws;
 
             this.ws.on('message', function incoming(message) {
@@ -20,13 +20,13 @@ class WS {
             });
 
             this.ws.send('something');
-        });
+        });*/
 
         this.wss.on('listening', function () {
             console.log("Websocket Server Started");
         });
 
-        this.server.listen(8080);
+        //this.server.listen(8080);
     }
 
     broadcastMessage(message) {
@@ -37,7 +37,7 @@ class WS {
         });
     }
 
-    handleMessage(message) {
+    /*handleMessage(message) {
         console.log('received: %s', message);
 
         switch (message) {
@@ -70,6 +70,34 @@ class WS {
                     this.broadcastMessage(JSON.stringify({ giveawayEntries: Bot.poolPool }));
                 }
         };
+    }*/
+
+    onmessage(callback) {
+        this.wss.on('connection', function connection(ws) {
+            this.ws = ws;
+
+            this.ws.on('message', function incoming(message) {
+                callback(message);
+            });
+
+            this.ws.send('something');
+        });
+    }
+
+    /*onconnection(callback) {
+        this.wss.on('connection', function connection(ws) {
+            this.ws = ws;
+
+            this.ws.on('message', function incoming(message) {
+                this.handleMessage(message);
+            });
+
+            this.ws.send('something');
+        });
+    }*/
+
+    start() {
+        this.server.listen(8080);
     }
 }
 

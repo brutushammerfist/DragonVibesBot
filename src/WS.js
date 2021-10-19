@@ -2,7 +2,6 @@ const { readFileSync } = require('fs');
 const { createServer } = require('https');
 const { WebSocketServer } = require('ws');
 const secrets = require('../secrets.json');
-const Giveaway = require('./Giveaway.js');
 
 class WS {
     constructor() {
@@ -43,18 +42,18 @@ class WS {
 
         switch (message) {
             case "clear-giveaway":
-                Giveaway.clearGiveaway();
+                Bot.clearGiveaway();
                 this.broadcastMessage("clear-giveaway");
                 break;
             case "clear-pool":
-                Giveaway.clearPool();
+                Bot.clearPool();
                 this.broadcastMessage("clear-pool");
                 break;
             case "pull-giveaway":
-                Giveaway.pullGiveaway();
+                Bot.pullGiveaway();
                 break;
             case "pull-pool":
-                Giveaway.pullPool();
+                Bot.pullPool();
                 break;
             default:
                 var data = JSON.parse(message);
@@ -62,16 +61,16 @@ class WS {
                 console.log(data);
 
                 if (data.removeGiveaway) {
-                    Giveaway.removeGiveawayEntry(data.removeGiveaway);
-                    this.broadcastMessage(JSON.stringify({ giveawayEntries: Giveaway.giveawayPool }));
+                    Bot.removeGiveawayEntry(data.removeGiveaway);
+                    this.broadcastMessage(JSON.stringify({ giveawayEntries: Bot.giveawayPool }));
                 }
 
                 if (data.removePool) {
-                    Giveaway.removePoolEntry(data.removePool);
-                    this.broadcastMessage(JSON.stringify({ giveawayEntries: Giveaway.poolPool }));
+                    Bot.removePoolEntry(data.removePool);
+                    this.broadcastMessage(JSON.stringify({ giveawayEntries: Bot.poolPool }));
                 }
         };
     }
 }
 
-module.exports = new WS();
+module.exports = WS;

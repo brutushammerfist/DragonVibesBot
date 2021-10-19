@@ -3,7 +3,14 @@ const TwitchAPI = require('./TwitchAPI.js');
 const WS = require('./WS.js');
 
 class Bot {
-    constructor() { }
+    constructor() {
+        this.ws = new WS();
+        this.commands = new Map();
+        this.giveawayActive = false;
+        this.poolActive = false;
+        this.giveawayPool = [];
+        this.poolPool = [];
+    }
 
     handleCommand(commandName, username) {
         switch (commandName) {
@@ -14,26 +21,144 @@ class Bot {
             case "coins":
                 return username + " has accumulated " + Database.getCoins(username) + "coins in their hoard!";
             case "openga":
-                return Giveaway.openGiveaway();
+                return this.openGiveaway();
             case "openpool":
-                return Giveaway.openPool();
+                return this.openPool();
             case "enter":
                 //return Giveaway.enterGiveaway(username);
-                var response = Giveaway.enterGiveaway(username);
+                var response = this.enterGiveaway(username);
                 if (response.includes("successfully")) {
-                    WS.broadcastMessage(JSON.stringify({ giveawayEntries: Giveaway.giveawayPool }));
+                    this.ws.broadcastMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
                 }
                 return response;
             case "pool":
                 //return Giveaway.enterPool(username);
-                var response = Giveaway.enterPool(username);
+                var response = this.enterPool(username);
                 if (response.includes("successfully")) {
-                    WS.broadcastMessage(JSON.stringify({ poolEntries: Giveaway.poolPool }));
+                    this.ws.broadcastMessage(JSON.stringify({ poolEntries: this.poolPool }));
                 }
                 return response;
             default:
                 return "Invalid Command!";
         }
+    }
+
+    /***
+     * Websocket Commands
+     */
+
+    handleWSMessage() {
+        console.log('received: %s', message);
+
+        switch (message) {
+            case "clear-giveaway":
+                this.clearGiveaway();
+                this.ws.broadcastMessage("clear-giveaway");
+                break;
+            case "clear-pool":
+                this.clearPool();
+                this.ws.broadcastMessage("clear-pool");
+                break;
+            case "pull-giveaway":
+                this.pullGiveaway();
+                break;
+            case "pull-pool":
+                this.pullPool();
+                break;
+            default:
+                var data = JSON.parse(message);
+
+                console.log(data);
+
+                if (data.removeGiveaway) {
+                    this.removeGiveawayEntry(data.removeGiveaway);
+                    this.ws.broadcastMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
+                }
+
+                if (data.removePool) {
+                    this.removePoolEntry(data.removePool);
+                    this.ws.broadcastMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
+                }
+        };
+    }
+
+    /***
+     * Giveaway/Pool Commands
+     */
+
+    openGiveaway() {
+        if (this.giveawayActive) {
+            return "Giveaway is already active!";
+        }
+
+        this.giveawayActive = true;
+        return "Giveaway started!";
+    }
+
+    openPool() {
+        if (this.poolActive) {
+            return "Pool is already open!";
+        }
+
+        this.poolActive = true;
+        return "Pool opened!";
+    }
+
+    enterGiveaway(username) {
+        if (this.giveawayActive) {
+            if (!this.giveawayPool.includes(username)) {
+                this.giveawayPool.push(username);
+
+                return `@${username}, you've successfully been entered into the giveaway.`;
+            }
+
+            return `@${username}, you've already entered the giveaway.`;
+        }
+
+        return "There is not an active giveaway.";
+    }
+
+    enterPool(username) {
+        if (this.poolActive) {
+            if (!this.poolPool.includes(username)) {
+                this.poolPool.push(username);
+
+
+                return `@${username}, you've successfully been entered into the pool.`;
+            }
+
+            return `@${username}, you've already entered the pool.`;
+        }
+
+        return "There is not an active pool.";
+    }
+
+    pullGiveaway() {
+        var winner = this.giveawayPool[Math.floor(Math.random() * this.giveawayPool.length)];
+        this.removeGiveawayEntry(winner);
+        return winner;
+    }
+
+    clearGiveaway() {
+        this.giveawayPool = [];
+    }
+
+    removeGiveawayEntry(username) {
+        this.giveawayPool.splice(this.giveawayPool.indexOf(username), 1);
+    }
+
+    pullPool() {
+        var winner = this.poolPool[Math.floor(Math.random() * this.poolPool.length)];
+        this.removePoolEntry(winner);
+        return winner;
+    }
+
+    clearPool() {
+        this.poolPool = [];
+    }
+
+    removePoolEntry() {
+        this.poolPool.splice(this.poolPool.indexOf(username), 1);
     }
 }
 

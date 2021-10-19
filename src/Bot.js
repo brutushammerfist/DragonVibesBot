@@ -64,8 +64,12 @@ class Bot {
                 return username + " has accumulated " + Database.getCoins(username) + "coins in their hoard!";
             case "openga":
                 return this.openGiveaway();
+            case "closega":
+                return this.clearGiveaway();
             case "openpool":
                 return this.openPool();
+            case "closepool":
+                return this.clearPool();
             case "enter":
                 //return Giveaway.enterGiveaway(username);
                 var response = this.enterGiveaway(username);
@@ -193,6 +197,7 @@ class Bot {
 
     clearGiveaway() {
         this.giveawayPool = [];
+        this.giveawayActive = false;
     }
 
     removeGiveawayEntry(username) {
@@ -207,6 +212,7 @@ class Bot {
 
     clearPool() {
         this.poolPool = [];
+        this.poolActive = false;
     }
 
     removePoolEntry(username) {

@@ -6,6 +6,7 @@ class Bot {
     constructor() {
         this.ws = new WS();
         this.ws.onmessage(this.handleWSMessage);
+        this.ws.start();
         this.commands = new Map();
         this.giveawayActive = false;
         this.poolActive = false;

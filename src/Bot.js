@@ -21,49 +21,15 @@ class Bot {
 
         this.wss = new WebSocketServer({ server: this.wsServer });
 
+        this.wss.bot = this;
+
         this.wss.on('connection', function connection(ws) {
-            this.ws = ws;
-
-            this.ws.on('message', function incoming(message) {
-                handleWSMessage(message);
-                /*console.log(typeof this);
-                console.log('received: %s', message);
-
-                switch (message) {
-                    case "clear-giveaway":
-                        this.clearGiveaway();
-                        this.broadcastWSMessage("clear-giveaway");
-                        break;
-                    case "clear-pool":
-                        this.clearPool();
-                        this.broadcastWSMessage("clear-pool");
-                        break;
-                    case "pull-giveaway":
-                        this.pullGiveaway();
-                        break;
-                    case "pull-pool":
-                        this.pullPool();
-                        break;
-                    default:
-                        var data = JSON.parse(message);
-
-                        console.log(data);
-
-                        if (data.removeGiveaway) {
-                            this.removeGiveawayEntry(data.removeGiveaway);
-                            this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
-                        }
-
-                        if (data.removePool) {
-                            this.removePoolEntry(data.removePool);
-                            this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
-                        }
-                };*/
+            ws.bot = this.bot;
+            ws.on('message', function (message) {
+                this.bot.handleWSMessage(message);
             });
 
-            //this.ws.onmessage = this.handleWSMessage;
-
-            this.ws.send('Connected!');
+            ws.send('Connected!');
         });
 
         this.wss.on('listening', function () {

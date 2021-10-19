@@ -49,7 +49,7 @@ class Bot {
      * Websocket Commands
      */
 
-    handleWSMessage() {
+    handleWSMessage(message) {
         console.log('received: %s', message);
 
         switch (message) {

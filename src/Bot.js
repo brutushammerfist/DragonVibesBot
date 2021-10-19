@@ -25,7 +25,40 @@ class Bot {
             this.ws = ws;
 
             this.ws.on('message', function incoming(message) {
-                this.handleWSMessage(message);
+                //this.handleWSMessage(message);
+                console.log(this);
+                console.log('received: %s', message);
+
+                switch (message) {
+                    case "clear-giveaway":
+                        this.clearGiveaway();
+                        this.broadcastWSMessage("clear-giveaway");
+                        break;
+                    case "clear-pool":
+                        this.clearPool();
+                        this.broadcastWSMessage("clear-pool");
+                        break;
+                    case "pull-giveaway":
+                        this.pullGiveaway();
+                        break;
+                    case "pull-pool":
+                        this.pullPool();
+                        break;
+                    default:
+                        var data = JSON.parse(message);
+
+                        console.log(data);
+
+                        if (data.removeGiveaway) {
+                            this.removeGiveawayEntry(data.removeGiveaway);
+                            this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.giveawayPool }));
+                        }
+
+                        if (data.removePool) {
+                            this.removePoolEntry(data.removePool);
+                            this.broadcastWSMessage(JSON.stringify({ giveawayEntries: this.poolPool }));
+                        }
+                };
             });
 
             this.ws.send('Connected!');
